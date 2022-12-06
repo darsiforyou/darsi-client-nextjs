@@ -7,6 +7,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ProductCard } from "../../components/ProductCard";
@@ -33,77 +34,82 @@ export default function Search() {
   }, [query, activePage]);
 
   return (
-    <Container
-      size="lg"
-      sx={{
-        marginBottom: 30,
-        marginTop: 30,
-        backgroundColor: "white",
-        padding: 20,
-      }}
-    >
-      {!isFetching ? (
-        <>
-          <Text size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-            Search Result for <b>"{query}"</b>
-          </Text>
-          <Text>
-            {data?.data.totalDocs} items found for "{query}"
-          </Text>
-          <Grid columns={3}>
-            <Grid.Col xs={3} sm={3} md={3} lg={3}>
-              <SimpleGrid
-                breakpoints={[
-                  // { minWidth: 300, cols: 2 },
-                  // { minWidth: "xs", cols: 3 },
-                  // { minWidth: "sm", cols: 4 },
-                  // { minWidth: "md", cols: 4 },
-                  { minWidth: 300, cols: 2 },
-                  { minWidth: "xs", cols: 3 },
-                  { minWidth: "sm", cols: 4 },
-                  { minWidth: "md", cols: 6 },
-                ]}
-              >
-                {data?.data.docs.length ? (
-                  <>
-                    {data?.data.docs?.map((product: any, i: number) => (
-                      <div key={i}>
-                        <ProductCard product={product} />
-                      </div>
-                    ))}
-                  </>
-                ) : (
-                  <Text
-                    weight={600}
-                    size="md"
-                    sx={{
-                      lineHeight: 1,
-                      marginBottom: 20,
-                      textAlign: "center",
-                    }}
-                  >
-                    No Products Found
-                  </Text>
-                )}
-              </SimpleGrid>
-              {data?.data?.totalPages && data?.data?.totalPages > 1 && (
-                <Pagination
-                  page={activePage}
-                  onChange={setPage}
-                  total={data?.data.totalPages}
-                  position="center"
-                  mt={"xl"}
-                  styles={(theme) => ({
-                    item: {
-                      "&[data-active]": {
-                        backgroundColor: "#f85606",
+    <>
+      <Head>
+        <title>Darsi | Product Search</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Container
+        size="lg"
+        sx={{
+          marginBottom: 30,
+          marginTop: 30,
+          backgroundColor: "white",
+          padding: 20,
+        }}
+      >
+        {!isFetching ? (
+          <>
+            <Text size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
+              Search Result for <b>"{query}"</b>
+            </Text>
+            <Text>
+              {data?.data.totalDocs} items found for "{query}"
+            </Text>
+            <Grid columns={3}>
+              <Grid.Col xs={3} sm={3} md={3} lg={3}>
+                <SimpleGrid
+                  breakpoints={[
+                    // { minWidth: 300, cols: 2 },
+                    // { minWidth: "xs", cols: 3 },
+                    // { minWidth: "sm", cols: 4 },
+                    // { minWidth: "md", cols: 4 },
+                    { minWidth: 300, cols: 2 },
+                    { minWidth: "xs", cols: 3 },
+                    { minWidth: "sm", cols: 4 },
+                    { minWidth: "md", cols: 6 },
+                  ]}
+                >
+                  {data?.data.docs.length ? (
+                    <>
+                      {data?.data.docs?.map((product: any, i: number) => (
+                        <div key={i}>
+                          <ProductCard product={product} />
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <Text
+                      weight={600}
+                      size="md"
+                      sx={{
+                        lineHeight: 1,
+                        marginBottom: 20,
+                        textAlign: "center",
+                      }}
+                    >
+                      No Products Found
+                    </Text>
+                  )}
+                </SimpleGrid>
+                {data?.data?.totalPages && data?.data?.totalPages > 1 && (
+                  <Pagination
+                    page={activePage}
+                    onChange={setPage}
+                    total={data?.data.totalPages}
+                    position="center"
+                    mt={"xl"}
+                    styles={(theme) => ({
+                      item: {
+                        "&[data-active]": {
+                          backgroundColor: "#f85606",
+                        },
                       },
-                    },
-                  })}
-                />
-              )}
-            </Grid.Col>
-            {/* <Grid.Col xs={3} sm={3} md={1} lg={1}>
+                    })}
+                  />
+                )}
+              </Grid.Col>
+              {/* <Grid.Col xs={3} sm={3} md={1} lg={1}>
           <Card
             shadow="sm"
             p="lg"
@@ -148,11 +154,12 @@ export default function Search() {
             </Box>
           </Card>
         </Grid.Col> */}
-          </Grid>
-        </>
-      ) : (
-        <LoadingOverlay visible={isFetching} overlayBlur={2} />
-      )}
-    </Container>
+            </Grid>
+          </>
+        ) : (
+          <LoadingOverlay visible={isFetching} overlayBlur={2} />
+        )}
+      </Container>
+    </>
   );
 }

@@ -8,6 +8,7 @@ import {
   Select,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -71,14 +72,14 @@ function Register() {
         !value
           ? "First name is required"
           : /^[a-zA-Z]+$/.test(value)
-          ? null
-          : "Invalid first name",
+            ? null
+            : "Invalid first name",
       lastname: (value) =>
         !value
           ? "Last name is required"
           : /^[a-zA-Z]+$/.test(value)
-          ? null
-          : "Invalid last name",
+            ? null
+            : "Invalid last name",
       cpassword: (value, values) =>
         value !== values.password
           ? "Password and Custom Password must be match"
@@ -115,94 +116,100 @@ function Register() {
   };
 
   return (
-    <Container
-      size="xs"
-      sx={{
-        marginBottom: 30,
-        marginTop: 30,
-        backgroundColor: "white",
-        padding: 20,
-      }}
-    >
-      <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-        Signup as a {type}
-      </Text>
-      <form onSubmit={form.onSubmit(handleSubmit)} autoComplete="off">
-        <TextInput
-          withAsterisk
-          label="First Name"
-          placeholder="Enter Your First Name"
-          {...form.getInputProps("firstname")}
-        />
-        <TextInput
-          withAsterisk
-          label="Last Name"
-          placeholder="Enter Your Last Name"
-          {...form.getInputProps("lastname")}
-        />
-        <TextInput
-          withAsterisk
-          label="Email"
-          autoComplete="new-email"
-          placeholder="Enter Your Email"
-          {...form.getInputProps("email")}
-        />
-        <PasswordInput
-          placeholder="Enter Your Password"
-          label="Password"
-          withAsterisk
-          autoComplete="off"
-          {...form.getInputProps("password")}
-        />
-        <PasswordInput
-          placeholder="Enter Your Confirm Password"
-          label="Confirm Password"
-          withAsterisk
-          {...form.getInputProps("cpassword")}
-        />
-        {type === "Referrer" && (
-          <>
-            <Select
-              withAsterisk
-              label="Select Your Package"
-              placeholder="Pick one"
-              data={_packages}
-              {...form.getInputProps("referral_package")}
-            />
-            <TextInput
-              // withAsterisk
-              label="Referred by"
-              placeholder="Enter Your Referred by"
-              {...form.getInputProps("referred_by")}
-            />
-          </>
-        )}
-        <Group position="right" mt="md">
-          <Button
-            type="button"
-            variant="subtle"
-            radius="xs"
-            size="xs"
-            component={Link}
-            href="/login"
-          >
-            Are you already a member? Please login
-          </Button>
-          <Button
-            type="submit"
-            sx={{
-              backgroundColor: "#f85606",
-              "&:hover": {
+    <>
+      <Head>
+        <title>Darsi | Signup</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Container
+        size="xs"
+        sx={{
+          marginBottom: 30,
+          marginTop: 30,
+          backgroundColor: "white",
+          padding: 20,
+        }}
+      >
+        <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
+          Signup as a {type}
+        </Text>
+        <form onSubmit={form.onSubmit(handleSubmit)} autoComplete="off">
+          <TextInput
+            withAsterisk
+            label="First Name"
+            placeholder="Enter Your First Name"
+            {...form.getInputProps("firstname")}
+          />
+          <TextInput
+            withAsterisk
+            label="Last Name"
+            placeholder="Enter Your Last Name"
+            {...form.getInputProps("lastname")}
+          />
+          <TextInput
+            withAsterisk
+            label="Email"
+            autoComplete="new-email"
+            placeholder="Enter Your Email"
+            {...form.getInputProps("email")}
+          />
+          <PasswordInput
+            placeholder="Enter Your Password"
+            label="Password"
+            withAsterisk
+            autoComplete="off"
+            {...form.getInputProps("password")}
+          />
+          <PasswordInput
+            placeholder="Enter Your Confirm Password"
+            label="Confirm Password"
+            withAsterisk
+            {...form.getInputProps("cpassword")}
+          />
+          {type === "Referrer" && (
+            <>
+              <Select
+                withAsterisk
+                label="Select Your Package"
+                placeholder="Pick one"
+                data={_packages}
+                {...form.getInputProps("referral_package")}
+              />
+              <TextInput
+                // withAsterisk
+                label="Referred by"
+                placeholder="Enter Your Referred by"
+                {...form.getInputProps("referred_by")}
+              />
+            </>
+          )}
+          <Group position="right" mt="md">
+            <Button
+              type="button"
+              variant="subtle"
+              radius="xs"
+              size="xs"
+              component={Link}
+              href="/login"
+            >
+              Are you already a member? Please login
+            </Button>
+            <Button
+              type="submit"
+              sx={{
                 backgroundColor: "#f85606",
-                transform: "scale(1.1)",
-              },
-            }}
-          >
-            Submit
-          </Button>
-        </Group>
-      </form>
-    </Container>
+                "&:hover": {
+                  backgroundColor: "#f85606",
+                  transform: "scale(1.1)",
+                },
+              }}
+            >
+              Submit
+            </Button>
+          </Group>
+        </form>
+      </Container>
+    </>
   );
 }
 

@@ -11,6 +11,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconSquareX } from "@tabler/icons";
+import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,11 +39,10 @@ const useStyles = createStyles((theme) => ({
       left: 0,
       right: 0,
       bottom: 0,
-      borderBottom: `1px solid ${
-        theme.colorScheme === "dark"
+      borderBottom: `1px solid ${theme.colorScheme === "dark"
           ? theme.colors.dark[3]
           : theme.colors.gray[2]
-      }`,
+        }`,
     },
   },
 
@@ -141,136 +141,142 @@ function Cart() {
     );
   });
   return (
-    <Container
-      size="lg"
-      sx={{
-        marginBottom: 30,
-        marginTop: 30,
-        backgroundColor: "white",
-        padding: 20,
-      }}
-    >
-      <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-        Cart
-      </Text>
-      <Grid columns={3}>
-        <Grid.Col xs={3} sm={3} md={2} lg={2}>
-          <ScrollArea
-            sx={{ height: 300 }}
-            onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-          >
-            <Table sx={{ minWidth: "100%" }}>
-              <thead
-                className={cx(classes.header, { [classes.scrolled]: scrolled })}
-              >
-                <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Qty</th>
-                  <th>Total</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-            </Table>
-          </ScrollArea>
-        </Grid.Col>
-        <Grid.Col xs={3} sm={3} md={1} lg={1}>
-          <Card
-            shadow="sm"
-            p="lg"
-            radius="md"
-            withBorder
-            sx={{ minWidth: "100%", height: "100%", background: "#F5F5F5" }}
-          >
+    <>
+      <Head>
+        <title>Darsi | Cart</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Container
+        size="lg"
+        sx={{
+          marginBottom: 30,
+          marginTop: 30,
+          backgroundColor: "white",
+          padding: 20,
+        }}
+      >
+        <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
+          Cart
+        </Text>
+        <Grid columns={3}>
+          <Grid.Col xs={3} sm={3} md={2} lg={2}>
             <ScrollArea
               sx={{ height: 300 }}
               onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
             >
               <Table sx={{ minWidth: "100%" }}>
-                <thead>
+                <thead
+                  className={cx(classes.header, { [classes.scrolled]: scrolled })}
+                >
                   <tr>
-                    <th colSpan={2}>Cart Total</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                    <th></th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Sub Total:</td>
-                    <td>Rs.{cart.total}</td>
-                  </tr>
-                  <tr>
-                    <td>Discount:</td>
-                    <td>Rs.{cart.discount}</td>
-                  </tr>
-                  <tr>
-                    <td>Total:</td>
-                    <td>Rs.{cart.total - cart.discount}</td>
-                  </tr>
-                </tbody>
+                <tbody>{rows}</tbody>
               </Table>
             </ScrollArea>
-            <TextInput
-              disabled={
-                cart.products.length === 0 ||
-                (cart.discount && cart.products.length >= 0)
-              }
-              label="Referral Code"
-              placeholder="Enter code to get discount"
-              classNames={classesDiscountInput}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-            <Button
-              disabled={!code || (cart.discount && cart.products.length >= 0)}
-              variant="light"
-              sx={{ marginTop: 10, width: "100%" }}
-              color="indigo"
-              onClick={() =>
-                apply_discount_code(dispatch, code)
-                  .then((res: any) => {
-                    setPackage(res);
-                    dispatch(
-                      notification_on({
-                        message: "Discount applied",
-                      })
-                    );
-                    setTimeout(() => {
-                      dispatch(notification_off());
-                    }, 3000);
-                  })
-                  .catch((err) => {
-                    dispatch(
-                      notification_on({
-                        message: "Something went wrong!",
-                        type: "Error",
-                      })
-                    );
-                    setTimeout(() => {
-                      dispatch(notification_off());
-                    }, 3000);
-                  })
-              }
+          </Grid.Col>
+          <Grid.Col xs={3} sm={3} md={1} lg={1}>
+            <Card
+              shadow="sm"
+              p="lg"
+              radius="md"
+              withBorder
+              sx={{ minWidth: "100%", height: "100%", background: "#F5F5F5" }}
             >
-              Apply Code
-            </Button>
-            <Button
-              disabled={cart.products.length === 0}
-              sx={{
-                marginTop: 10,
-                width: "100%",
-                backgroundColor: "#f85606",
-                "&:hover": { backgroundColor: "#f85606" },
-              }}
-              component={Link}
-              href="/checkout"
-            >
-              PROCEED TO CHECKOUT
-            </Button>
-          </Card>
-        </Grid.Col>
-      </Grid>
-    </Container>
+              <ScrollArea
+                sx={{ height: 300 }}
+                onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+              >
+                <Table sx={{ minWidth: "100%" }}>
+                  <thead>
+                    <tr>
+                      <th colSpan={2}>Cart Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Sub Total:</td>
+                      <td>Rs.{cart.total}</td>
+                    </tr>
+                    <tr>
+                      <td>Discount:</td>
+                      <td>Rs.{cart.discount}</td>
+                    </tr>
+                    <tr>
+                      <td>Total:</td>
+                      <td>Rs.{cart.total - cart.discount}</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </ScrollArea>
+              <TextInput
+                disabled={
+                  cart.products.length === 0 ||
+                  (cart.discount && cart.products.length >= 0)
+                }
+                label="Referral Code"
+                placeholder="Enter code to get discount"
+                classNames={classesDiscountInput}
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+              <Button
+                disabled={!code || (cart.discount && cart.products.length >= 0)}
+                variant="light"
+                sx={{ marginTop: 10, width: "100%" }}
+                color="indigo"
+                onClick={() =>
+                  apply_discount_code(dispatch, code)
+                    .then((res: any) => {
+                      setPackage(res);
+                      dispatch(
+                        notification_on({
+                          message: "Discount applied",
+                        })
+                      );
+                      setTimeout(() => {
+                        dispatch(notification_off());
+                      }, 3000);
+                    })
+                    .catch((err) => {
+                      dispatch(
+                        notification_on({
+                          message: "Something went wrong!",
+                          type: "Error",
+                        })
+                      );
+                      setTimeout(() => {
+                        dispatch(notification_off());
+                      }, 3000);
+                    })
+                }
+              >
+                Apply Code
+              </Button>
+              <Button
+                disabled={cart.products.length === 0}
+                sx={{
+                  marginTop: 10,
+                  width: "100%",
+                  backgroundColor: "#f85606",
+                  "&:hover": { backgroundColor: "#f85606" },
+                }}
+                component={Link}
+                href="/checkout"
+              >
+                PROCEED TO CHECKOUT
+              </Button>
+            </Card>
+          </Grid.Col>
+        </Grid>
+      </Container>
+    </>
   );
 }
 

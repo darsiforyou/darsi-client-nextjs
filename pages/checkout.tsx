@@ -30,6 +30,7 @@ import {
 } from "../redux/reducers/notificationRedux";
 import CITIES from "../assets/cities.json";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -45,11 +46,10 @@ const useStyles = createStyles((theme) => ({
       left: 0,
       right: 0,
       bottom: 0,
-      borderBottom: `1px solid ${
-        theme.colorScheme === "dark"
+      borderBottom: `1px solid ${theme.colorScheme === "dark"
           ? theme.colors.dark[3]
           : theme.colors.gray[2]
-      }`,
+        }`,
     },
   },
 
@@ -129,14 +129,14 @@ function Cart() {
         !value
           ? "First name is required"
           : /^[a-zA-Z]+$/.test(value)
-          ? null
-          : "Invalid first name",
+            ? null
+            : "Invalid first name",
       lastname: (value) =>
         !value
           ? "Last name is required"
           : /^[a-zA-Z]+$/.test(value)
-          ? null
-          : "Invalid last name",
+            ? null
+            : "Invalid last name",
       postalCode: (value) => (!value ? "Postal code is required" : null),
       city: (value) => (!value ? "City is required" : null),
       address: (value) => (!value ? "Address is required" : null),
@@ -202,6 +202,10 @@ function Cart() {
   };
   return (
     <>
+      <Head>
+        <title>Darsi | Checkout</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Container
         size="lg"
         sx={{

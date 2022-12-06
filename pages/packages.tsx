@@ -1,4 +1,5 @@
 import { Container, Grid, Text } from "@mantine/core";
+import Head from "next/head";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PackageCard } from "../components/PackageCard";
@@ -15,27 +16,33 @@ function Products() {
   }, []);
   const { packages, isFetching } = useSelector((state: any) => state.package);
   return (
-    <Container
-      size="lg"
-      sx={{
-        marginBottom: 30,
-        marginTop: 30,
-        backgroundColor: "white",
-        padding: 20,
-      }}
-    >
-      <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-        All Packages
-      </Text>
-      <Grid columns={3}>
-        {!isFetching &&
-          packages?.map((pac: any) => (
-            <Grid.Col key={pac._id} xs={3} sm={1.5} md={1.5} lg={1}>
-              <PackageCard pac={pac} />
-            </Grid.Col>
-          ))}
-      </Grid>
-    </Container>
+    <>
+      <Head>
+        <title>Darsi | Packages</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Container
+        size="lg"
+        sx={{
+          marginBottom: 30,
+          marginTop: 30,
+          backgroundColor: "white",
+          padding: 20,
+        }}
+      >
+        <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
+          All Packages
+        </Text>
+        <Grid columns={3}>
+          {!isFetching &&
+            packages?.map((pac: any) => (
+              <Grid.Col key={pac._id} xs={3} sm={1.5} md={1.5} lg={1}>
+                <PackageCard pac={pac} />
+              </Grid.Col>
+            ))}
+        </Grid>
+      </Container>
+    </>
   );
 }
 

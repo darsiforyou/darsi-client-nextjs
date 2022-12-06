@@ -8,6 +8,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,12 +18,12 @@ import { get_products } from "../redux/action/product";
 function Products() {
   const dispatch = useDispatch();
   let router = useRouter();
-  
+
   //let { query } = useParams();
   const [scroll, scrollTo] = useWindowScroll();
 
   const search = new URLSearchParams("");
-  const {query} = router
+  const { query } = router
   const [selectedCategories, setselectedCategories]: any[] = useState([]);
   const [selectedProducts, setselectedProducts]: any[] = useState([]);
   const { products, isFetching } = useSelector((state: any) => state.product);
@@ -64,50 +65,55 @@ function Products() {
     setselectedProducts(pro);
   };
   return (
-    <Container
-      size="lg"
-      sx={{
-        marginBottom: 30,
-        marginTop: 30,
-        backgroundColor: "white",
-        padding: 20,
-      }}
-    >
-      <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-        All Products
-      </Text>
-      <Grid columns={3}>
-        <Grid.Col xs={3} sm={3} md={3} lg={3}>
-          <SimpleGrid
-            breakpoints={[
-              // { minWidth: 300, cols: 2 },
-              // { minWidth: "xs", cols: 3 },
-              // { minWidth: "sm", cols: 4 },
-              // { minWidth: "md", cols: 4 },
-              { minWidth: 300, cols: 2 },
-              { minWidth: "xs", cols: 3 },
-              { minWidth: "sm", cols: 4 },
-              { minWidth: "md", cols: 5 },
-            ]}
-          >
-            {selectedProducts.length > 0 ? (
-              selectedProducts?.map((product: any, i: number) => (
-                <div key={i}>
-                  <ProductCard product={product} />
-                </div>
-              ))
-            ) : (
-              <Text
-                weight={600}
-                size="md"
-                sx={{ lineHeight: 1, marginBottom: 20, textAlign: "center" }}
-              >
-                No Products Found
-              </Text>
-            )}
-          </SimpleGrid>
-        </Grid.Col>
-        {/* <Grid.Col xs={3} sm={3} md={1} lg={1}>
+    <>
+      <Head>
+        <title>Darsi | Products</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Container
+        size="lg"
+        sx={{
+          marginBottom: 30,
+          marginTop: 30,
+          backgroundColor: "white",
+          padding: 20,
+        }}
+      >
+        <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
+          All Products
+        </Text>
+        <Grid columns={3}>
+          <Grid.Col xs={3} sm={3} md={3} lg={3}>
+            <SimpleGrid
+              breakpoints={[
+                // { minWidth: 300, cols: 2 },
+                // { minWidth: "xs", cols: 3 },
+                // { minWidth: "sm", cols: 4 },
+                // { minWidth: "md", cols: 4 },
+                { minWidth: 300, cols: 2 },
+                { minWidth: "xs", cols: 3 },
+                { minWidth: "sm", cols: 4 },
+                { minWidth: "md", cols: 5 },
+              ]}
+            >
+              {selectedProducts.length > 0 ? (
+                selectedProducts?.map((product: any, i: number) => (
+                  <div key={i}>
+                    <ProductCard product={product} />
+                  </div>
+                ))
+              ) : (
+                <Text
+                  weight={600}
+                  size="md"
+                  sx={{ lineHeight: 1, marginBottom: 20, textAlign: "center" }}
+                >
+                  No Products Found
+                </Text>
+              )}
+            </SimpleGrid>
+          </Grid.Col>
+          {/* <Grid.Col xs={3} sm={3} md={1} lg={1}>
           <Card
             shadow="sm"
             p="lg"
@@ -152,8 +158,9 @@ function Products() {
             </Box>
           </Card>
         </Grid.Col> */}
-      </Grid>
-    </Container>
+        </Grid>
+      </Container>
+    </>
   );
 }
 

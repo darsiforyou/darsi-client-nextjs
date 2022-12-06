@@ -15,6 +15,7 @@ import {
   notification_on,
 } from "../redux/reducers/notificationRedux";
 import { useRouter } from "next/router";
+import Head from "next/head";
 function ForgotPassword() {
   const [isOtpSend, setIsOtpSend] = useState(false)
   const form = useForm({
@@ -28,11 +29,11 @@ function ForgotPassword() {
       user_email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
       otp_code: (value) => (isOtpSend ? !value ? "Code is Required" : null : null),
       new_password: (value) =>
-        (isOtpSend ? /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
-          value
-        )
-          ? null
-          : "Minimum eight characters, at least one special character, one letter and one number" : null),
+      (isOtpSend ? /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
+        value
+      )
+        ? null
+        : "Minimum eight characters, at least one special character, one letter and one number" : null),
     },
   });
   const dispatch = useDispatch();
@@ -79,9 +80,9 @@ function ForgotPassword() {
     // navigate("/login", { replace: true });
   }
   const handleSubmit = (values: any) => {
-    if(isOtpSend){
+    if (isOtpSend) {
       handleChangePassword(values)
-    }else{
+    } else {
       handleGetOtp(values)
     }
   };
@@ -89,63 +90,70 @@ function ForgotPassword() {
     window.scrollTo(0, 0);
   }, []);
   return (
-    <Container
-      size="xs"
-      sx={{
-        marginBottom: 30,
-        marginTop: 30,
-        backgroundColor: "white",
-        padding: 20,
-      }}
-    >
-      <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-        Forgot Password
-      </Text>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <TextInput
-          withAsterisk
-          label="Email"
-          readOnly={isOtpSend}
-          placeholder="Enter Your Email"
-          {...form.getInputProps("user_email")}
-        />
-        {
-          isOtpSend && (
-            <>
-            <PasswordInput
-              placeholder="Enter Your New Password"
-              label="New Password"
-              withAsterisk
-              {...form.getInputProps("new_password")}
-            />
-            <TextInput
-              withAsterisk
-              label="OPT Code"
-              placeholder="Enter OTP Code"
-              {...form.getInputProps("otp_code")}
-            />
-            </>
-          )
-        }
-        <Group position="right" mt="md">
-          <Button type="button" variant="subtle" radius="xs" size="xs">
-            Resend Code
-          </Button>
-          <Button
-            type="submit"
-            sx={{
-              backgroundColor: "#f85606",
-              "&:hover": {
+    <>
+      <Head>
+        <title>Darsi | Forgot Password</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+
+      <Container
+        size="xs"
+        sx={{
+          marginBottom: 30,
+          marginTop: 30,
+          backgroundColor: "white",
+          padding: 20,
+        }}
+      >
+        <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
+          Forgot Password
+        </Text>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <TextInput
+            withAsterisk
+            label="Email"
+            readOnly={isOtpSend}
+            placeholder="Enter Your Email"
+            {...form.getInputProps("user_email")}
+          />
+          {
+            isOtpSend && (
+              <>
+                <PasswordInput
+                  placeholder="Enter Your New Password"
+                  label="New Password"
+                  withAsterisk
+                  {...form.getInputProps("new_password")}
+                />
+                <TextInput
+                  withAsterisk
+                  label="OPT Code"
+                  placeholder="Enter OTP Code"
+                  {...form.getInputProps("otp_code")}
+                />
+              </>
+            )
+          }
+          <Group position="right" mt="md">
+            <Button type="button" variant="subtle" radius="xs" size="xs">
+              Resend Code
+            </Button>
+            <Button
+              type="submit"
+              sx={{
                 backgroundColor: "#f85606",
-                transform: "scale(1.1)",
-              },
-            }}
-          >
-            Submit
-          </Button>
-        </Group>
-      </form>
-    </Container>
+                "&:hover": {
+                  backgroundColor: "#f85606",
+                  transform: "scale(1.1)",
+                },
+              }}
+            >
+              Submit
+            </Button>
+          </Group>
+        </form>
+      </Container>
+    </>
   );
 }
 
