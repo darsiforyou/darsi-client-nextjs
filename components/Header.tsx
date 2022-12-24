@@ -26,7 +26,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconSearch, IconShoppingCart } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import { logout } from "../redux/reducers/userRedux";
 import { useEffect } from "react";
 import { forwardRef } from "react";
@@ -320,14 +320,18 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
       <Header height={HEADER_HEIGHT} className={classes.root}>
         <Container size="lg" className={classes.topHeader}>
           <a
-            href="https://dashboard-darsi.netlify.app/vendor/signup"
+            href="https://dashboard.darsi.pk/vendor/signup"
             className={classes.upperLink}
+            target="_blank"
+            rel="noreferrer"
           >
             Become a Vendor
           </a>
           <a
             className={classes.upperLink}
-            href="https://dashboard-darsi.netlify.app/ref/signup"
+            href="https://dashboard.darsi.pk/ref/signup"
+            target="_blank"
+            rel="noreferrer"
           >
             Signup as Referrer
           </a>
@@ -362,7 +366,12 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
           <Box className={classes.header}>
             <Box className={classes.logo}>
               <Link href="/">
-                <Image src={'/darsi-logo.png'} alt="Logo" width={100} height={100} />
+                <Image
+                  src={"/darsi-logo.png"}
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                />
               </Link>
             </Box>
             <Group spacing={5} className={classes.links}>
@@ -522,7 +531,10 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
                     Signup as Referrer
                   </Link>
                   {!user?._id && (
-                    <Link className={cx(classes.link)} href="/register/Customer">
+                    <Link
+                      className={cx(classes.link)}
+                      href="/register/Customer"
+                    >
                       Signup
                     </Link>
                   )}

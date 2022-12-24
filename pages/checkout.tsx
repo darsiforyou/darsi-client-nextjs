@@ -1,10 +1,12 @@
 import {
+  Box,
   Button,
   Card,
   Container,
   createStyles,
   Grid,
   Modal,
+  Radio,
   ScrollArea,
   Select,
   Table,
@@ -46,10 +48,11 @@ const useStyles = createStyles((theme) => ({
       left: 0,
       right: 0,
       bottom: 0,
-      borderBottom: `1px solid ${theme.colorScheme === "dark"
+      borderBottom: `1px solid ${
+        theme.colorScheme === "dark"
           ? theme.colors.dark[3]
           : theme.colors.gray[2]
-        }`,
+      }`,
     },
   },
 
@@ -86,6 +89,7 @@ function Cart() {
   const [cartData, setCartData] = useState(false);
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("COD");
   const user = useSelector((state: any) => state.user.currentUser);
   const cart = useSelector((state: any) => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
@@ -129,14 +133,14 @@ function Cart() {
         !value
           ? "First name is required"
           : /^[a-zA-Z]+$/.test(value)
-            ? null
-            : "Invalid first name",
+          ? null
+          : "Invalid first name",
       lastname: (value) =>
         !value
           ? "Last name is required"
           : /^[a-zA-Z]+$/.test(value)
-            ? null
-            : "Invalid last name",
+          ? null
+          : "Invalid last name",
       postalCode: (value) => (!value ? "Postal code is required" : null),
       city: (value) => (!value ? "City is required" : null),
       address: (value) => (!value ? "Address is required" : null),
@@ -146,15 +150,24 @@ function Cart() {
     createOrder(cartData)
       .then((res: any) => {
         if (res.status === 200) {
-          dispatch(clear_cart());
-          router.push("/");
+          console.log(res);
+          if (res.data.paymentToken) {
+            window.open(
+              "https://pakistan.paymob.com/api/acceptance/iframes/70305?payment_token=" +
+                res.data.paymentToken,
+              "_blank"
+            );
+          } else {
+            dispatch(clear_cart());
+            router.push("/");
+            dispatch(
+              notification_on({ message: res.data?.message, type: "Success" })
+            );
+            setTimeout(() => {
+              dispatch(notification_off());
+            }, 3000);
+          }
         }
-        dispatch(
-          notification_on({ message: res.data?.message, type: "Success" })
-        );
-        setTimeout(() => {
-          dispatch(notification_off());
-        }, 3000);
       })
       .catch((error: any) => {
         dispatch(
@@ -198,6 +211,7 @@ function Cart() {
     cartData.city = values.city;
     cartData.postalCode = values.postalCode;
     cartData.phone = values.phone;
+    cartData.paymentMethod = paymentMethod;
     setCartData(cartData);
   };
   return (
@@ -315,6 +329,20 @@ function Cart() {
                     </tbody>
                   </Table>
                 </ScrollArea>
+                <Box mb={10}>
+                  <Radio.Group
+                    value={paymentMethod}
+                    onChange={setPaymentMethod}
+                    name="paymentMethod"
+                    label="Payment Method"
+                    withAsterisk
+                  >
+                    <Radio value="COD" label="COD" />
+                    <Radio value="BANK" label="CARD" />
+                    <Radio value="CARD" label="Card" />
+                    <Radio value="BANK" label="Bank" />
+                  </Radio.Group>
+                </Box>
                 {!cart.code && (
                   <>
                     <TextInput
@@ -340,9 +368,7 @@ function Cart() {
                           .then((res: any) => {
                             setPackage(res);
                             dispatch(
-                              notification_on({
-                                message: "Discount applied",
-                              })
+                              notification_on({ message: "Discount applied" })
                             );
                             setTimeout(() => {
                               dispatch(notification_off());
