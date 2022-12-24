@@ -1,8 +1,10 @@
 import {
+  Box,
   Container,
   Grid,
   LoadingOverlay,
   Pagination,
+  Select,
   SimpleGrid,
   Text,
 } from "@mantine/core";
@@ -10,28 +12,40 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { ProductCard } from "../../components/ProductCard";
 import { publicRequest } from "../../requestMethods";
 import { ApiResponse, Product } from "../../types/types";
 
 export default function Search() {
   let router = useRouter();
-  const { query } = router.query
+  const { query } = router.query;
   const [activePage, setPage] = useState(1);
+  const [sort, setSort] = useState("RECENT");
+  const [_categories, set_Categories] = useState([]);
+  const [category, setCategory] = useState("");
   const { data, isFetching, refetch } = useQuery<ApiResponse<Product>>({
     queryKey: ["products"],
     queryFn: async () => {
       const res = await publicRequest.get(
-        `/products?search=${query}&page=${activePage}&limit=50&isActive=true`
+        `/products?search=${query}&page=${activePage}&limit=48&isActive=true&sort=${sort}&category=${category}`
       );
       const data = res.data;
       return data;
     },
     refetchOnWindowFocus: false,
   });
+  const { categories } = useSelector((state: any) => state.category);
+  useEffect(() => {
+    let cats = categories.map((cat: any) => ({
+      label: cat.title,
+      value: cat._id,
+    }));
+    set_Categories(cats);
+  }, [categories]);
   useEffect(() => {
     refetch();
-  }, [query, activePage]);
+  }, [query, activePage, sort, category]);
 
   return (
     <>
@@ -50,9 +64,34 @@ export default function Search() {
       >
         {!isFetching ? (
           <>
-            <Text size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-              Search Result for <b>"{query}"</b>
-            </Text>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Text size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
+                Search Result for <b>"{query}"</b>
+              </Text>
+              <Box sx={{ display: "flex", gap: 10 }}>
+                <Select
+                  label="Category"
+                  data={_categories}
+                  placeholder="Select a category"
+                  value={category}
+                  onChange={(e: any) => {
+                    setCategory(e);
+                  }}
+                />
+                <Select
+                  label="Sort By"
+                  data={[
+                    { label: "Recent", value: "RECENT" },
+                    { label: "Price High to low", value: "PRICE_HIGH_TO_LOW" },
+                    { label: "Price low to High", value: "PRICE_LOW_TO_HIGH" },
+                  ]}
+                  value={sort}
+                  onChange={(e: any) => {
+                    setSort(e);
+                  }}
+                />
+              </Box>
+            </Box>
             <Text>
               {data?.data.totalDocs} items found for "{query}"
             </Text>

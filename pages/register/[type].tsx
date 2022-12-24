@@ -22,7 +22,7 @@ import {
 
 function Register() {
   let router = useRouter();
-  const { type } = router.query
+  const { type } = router.query;
   const dispatch = useDispatch();
   const { packages } = useSelector((state: any) => state.package);
   const [_packages, set_packages] = useState([]);
@@ -72,14 +72,14 @@ function Register() {
         !value
           ? "First name is required"
           : /^[a-zA-Z]+$/.test(value)
-            ? null
-            : "Invalid first name",
+          ? null
+          : "Invalid first name",
       lastname: (value) =>
         !value
           ? "Last name is required"
           : /^[a-zA-Z]+$/.test(value)
-            ? null
-            : "Invalid last name",
+          ? null
+          : "Invalid last name",
       cpassword: (value, values) =>
         value !== values.password
           ? "Password and Custom Password must be match"
