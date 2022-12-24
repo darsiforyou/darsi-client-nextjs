@@ -115,7 +115,13 @@ export function PackageCard({ pac }: any) {
             </Text>
           </div>
 
-          <Button radius="xl" style={{ flex: 1 }}>
+          <Button
+            component="a"
+            href={"https://dashboard.darsi.pk/ref/signup?package=" + pac._id}
+            target="_blank"
+            radius="xl"
+            style={{ flex: 1 }}
+          >
             Buy
           </Button>
         </Group>
