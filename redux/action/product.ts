@@ -19,6 +19,16 @@ export const get_products = async (dispatch: any, quary = "") => {
     dispatch(productFailure());
   }
 };
+export const getProducts = async (quary: any = {limit: 10}) => {
+  try {
+    const {limit, ...filters } = quary;
+    const params = new URLSearchParams(filters);
+    const res = await publicRequest.get(`products?limit=${limit}&${params}`);
+    const data = res.data.data.docs;
+    return data
+  } catch (err) {
+  }
+};
 export const get_products_by_cat = async (id: any) => {
   try {
     const res = await publicRequest.get("/products/without_filter");
