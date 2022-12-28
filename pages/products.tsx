@@ -20,11 +20,10 @@ import { ApiResponse, Product } from "../types/types";
 export default function Search() {
   let { query } = useRouter();
   const { category_id } = query;
-  console.log(category_id);
   const [activePage, setPage] = useState(1);
   const [sort, setSort] = useState("RECENT");
   const [_categories, set_Categories] = useState([]);
-  const [category, setCategory] = useState(category_id ? category_id : "");
+  const [category, setCategory] = useState(Array.isArray(category_id) ? category_id[0] : category_id || "");
   const { data, isFetching, refetch } = useQuery<ApiResponse<Product>>({
     queryKey: ["products"],
     queryFn: async () => {
