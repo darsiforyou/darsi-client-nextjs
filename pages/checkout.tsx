@@ -17,6 +17,7 @@ import { useForm } from "@mantine/form";
 import { IconSquareX } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { showNotification } from "@mantine/notifications";
 import { QuantityInput } from "../components/QuantityInput";
 import { createOrder } from "../redux/action/create_order";
 import { apply_discount_code } from "../redux/action/discount_code";
@@ -160,22 +161,20 @@ function Cart() {
           } else {
             dispatch(clear_cart());
             router.push("/");
-            dispatch(
-              notification_on({ message: res.data?.message, type: "Success" })
-            );
-            setTimeout(() => {
-              dispatch(notification_off());
-            }, 3000);
+            showNotification({
+              autoClose: 5000,
+              message: res.data?.message,
+              color: "green",
+            });
           }
         }
       })
       .catch((error: any) => {
-        dispatch(
-          notification_on({ message: "Something went wrong!", type: "Error" })
-        );
-        setTimeout(() => {
-          dispatch(notification_off());
-        }, 3000);
+        showNotification({
+          autoClose: 5000,
+          message: "Something went wrong!",
+          color: "red",
+        });
       });
     setIsModalOpen(false);
   };
@@ -367,23 +366,18 @@ function Cart() {
                         apply_discount_code(dispatch, code)
                           .then((res: any) => {
                             setPackage(res);
-                            dispatch(
-                              notification_on({ message: "Discount applied" })
-                            );
-                            setTimeout(() => {
-                              dispatch(notification_off());
-                            }, 3000);
+                              showNotification({
+                              autoClose: 5000,
+                              message: "Discount applied",
+                              color: "red",
+                            });
                           })
                           .catch((err) => {
-                            dispatch(
-                              notification_on({
-                                message: "Something went wrong!",
-                                type: "Error",
-                              })
-                            );
-                            setTimeout(() => {
-                              dispatch(notification_off());
-                            }, 3000);
+                            showNotification({
+                              autoClose: 5000,
+                              message: "Something went wrong!",
+                              color: "red",
+                            });
                           })
                       }
                     >

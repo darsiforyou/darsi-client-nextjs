@@ -21,6 +21,7 @@ import {
 } from "@mantine/core";
 import { IconMinus, IconPlus } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
+import { showNotification } from "@mantine/notifications";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductCard } from "../../components/ProductCard";
 import { get_product } from "../../redux/action/product";
@@ -358,27 +359,21 @@ function ProductDetail() {
                     }
                   });
                   if (isOptionEmpty) {
-                    dispatch(
-                      notification_on({
-                        message:
-                          "Please Select all options before placing an order.",
-                        type: "Error",
-                      })
-                    );
-                    setTimeout(() => {
-                      dispatch(notification_off());
-                    }, 3000);
+                    showNotification({
+                      autoClose: 5000,
+                      message: "Please Select all options before placing an order.",
+                      color: "red",
+                    });
                     return;
                   }
                   dispatch(addProductToCart({ ...product, quantity: qty }));
                   setIsModalOpen(true);
                 } else {
-                  dispatch(
-                    notification_on({ message: "Out of Stock", type: "Error" })
-                  );
-                  setTimeout(() => {
-                    dispatch(notification_off());
-                  }, 3000);
+                  showNotification({
+                    autoClose: 5000,
+                    message: "Out of Stock",
+                    color: "red",
+                  });
                 }
               }}
             >
@@ -514,7 +509,7 @@ function ProductDetail() {
                         //   addProductToCart({ ...product, quantity: qty })
                         // );
                         setIsModalOpen(false);
-                        navigate("/cart");
+                        router.push("/cart");
                       }
                     }}
                   >
@@ -542,7 +537,7 @@ function ProductDetail() {
                         // dispatch(
                         //   addProductToCart({ ...product, quantity: qty })
                         // );
-                        navigate("/checkout");
+                        router.push("/");
                       }
                     }}
                   >

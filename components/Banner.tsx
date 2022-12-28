@@ -14,7 +14,6 @@ import { IconCheck } from "@tabler/icons";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { get_banner_content } from "../redux/action/dashboard";
-import image from "./image.svg";
 
 const useStyles = createStyles((theme) => ({
   inner: {

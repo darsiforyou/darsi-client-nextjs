@@ -23,7 +23,7 @@ import {
   clearProductFromCart,
   clear_cart,
 } from "../redux/reducers/cartRedux";
-import { notification_off, notification_on } from "../redux/reducers/notificationRedux";
+import { showNotification } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -235,25 +235,18 @@ function Cart() {
                   apply_discount_code(dispatch, code)
                     .then((res: any) => {
                       setPackage(res);
-                      dispatch(
-                        notification_on({
-                          message: "Discount applied",
-                        })
-                      );
-                      setTimeout(() => {
-                        dispatch(notification_off());
-                      }, 3000);
+                      showNotification({
+                        autoClose: 5000,
+                        message: "Discount applied",
+                        color: "green",
+                      });
                     })
                     .catch((err) => {
-                      dispatch(
-                        notification_on({
-                          message: "Something went wrong!",
-                          type: "Error",
-                        })
-                      );
-                      setTimeout(() => {
-                        dispatch(notification_off());
-                      }, 3000);
+                      showNotification({
+                        autoClose: 5000,
+                        message: "Something went wrong!",
+                        color: "red",
+                      });
                     })
                 }
               >

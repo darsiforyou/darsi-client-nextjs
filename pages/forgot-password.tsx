@@ -15,6 +15,7 @@ import {
   notification_on,
 } from "../redux/reducers/notificationRedux";
 import { useRouter } from "next/router";
+import { showNotification } from "@mantine/notifications";
 import Head from "next/head";
 function ForgotPassword() {
   const [isOtpSend, setIsOtpSend] = useState(false)
@@ -41,41 +42,37 @@ function ForgotPassword() {
   const handleGetOtp = async (values: any) => {
     let res = await forgotPasswordOTP(values.user_email);
     if (res.status !== 200) {
-      dispatch(
-        notification_on({
-          message: res.data?.message || "Something went wrong!",
-          type: "Error",
-        })
-      );
-      setTimeout(() => {
-        dispatch(notification_off());
-      }, 3000);
+      showNotification({
+        autoClose: 5000,
+        message: "Something went wrong!",
+        color: "red",
+      });
+      
       return;
     }
-    dispatch(notification_on({ message: res.data?.message, type: "Success" }));
-    setTimeout(() => {
-      dispatch(notification_off());
-    }, 3000);
+    showNotification({
+      autoClose: 5000,
+      message: res.data?.message,
+      color: "green",
+    });
+   
     setIsOtpSend(true)
   }
   const handleChangePassword = async (values: any) => {
     let res = await changeUserPassword(values);
     if (res.status !== 200) {
-      dispatch(
-        notification_on({
-          message: res.data?.message || "Something went wrong!",
-          type: "Error",
-        })
-      );
-      setTimeout(() => {
-        dispatch(notification_off());
-      }, 3000);
+      showNotification({
+        autoClose: 5000,
+        message: "Something went wrong!",
+        color: "red",
+      });
       return;
     }
-    dispatch(notification_on({ message: res.data?.message, type: "Success" }));
-    setTimeout(() => {
-      dispatch(notification_off());
-    }, 3000);
+    showNotification({
+      autoClose: 5000,
+      message: res.data?.message,
+      color: "green",
+    });
     // setIsOtpSend(false)
     // navigate("/login", { replace: true });
   }

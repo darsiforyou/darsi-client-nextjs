@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconInfoCircle } from "@tabler/icons";
+import { showNotification } from "@mantine/notifications";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -46,20 +47,19 @@ function Login() {
       return setIsCustomer(false);
     }
     if (res.status !== 200) {
-      dispatch(
-        notification_on({ message: res.data?.message || "Something went wrong!", type: "Error" })
-      );
-      setTimeout(() => {
-        dispatch(notification_off());
-      }, 3000);
+      showNotification({
+        autoClose: 5000,
+        message: "Something went wrong!",
+        color: "red",
+      });
       return;
     }
-
     router.push("/");
-    dispatch(notification_on({ message: res.data?.message, type: "Success" }));
-    setTimeout(() => {
-      dispatch(notification_off());
-    }, 3000);
+    showNotification({
+      autoClose: 5000,
+      message: res.data?.message,
+      color: "green",
+    });
   };
   useEffect(() => {
     window.scrollTo(0, 0);

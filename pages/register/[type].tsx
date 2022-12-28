@@ -10,15 +10,12 @@ import {
 import { useForm } from "@mantine/form";
 import Head from "next/head";
 import Link from "next/link";
+import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux/action/auth_api";
 import { get_packages } from "../../redux/action/packages";
-import {
-  notification_off,
-  notification_on,
-} from "../../redux/reducers/notificationRedux";
 
 function Register() {
   let router = useRouter();
@@ -96,22 +93,17 @@ function Register() {
     if (res.data.success) {
       form.reset();
       router.push("/");
-      dispatch(
-        notification_on({ message: res.data?.message, type: "Success" })
-      );
-      setTimeout(() => {
-        dispatch(notification_off());
-      }, 3000);
+      showNotification({
+        autoClose: 5000,
+        message: res.data?.message,
+        color: "green",
+      });
     } else {
-      dispatch(
-        notification_on({
-          message: res.data?.message || "Something went wrong!",
-          type: "Error",
-        })
-      );
-      setTimeout(() => {
-        dispatch(notification_off());
-      }, 3000);
+      showNotification({
+        autoClose: 5000,
+        message: res.data?.message || "Something went wrong!",
+        color: "red",
+      });
     }
   };
 
