@@ -283,22 +283,22 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
   );
   const cart = useSelector((state: any) => state.cart);
   const dispatch = useDispatch();
-  const AutoCompleteItem = forwardRef<HTMLDivElement, ItemProps>(
-    ({ id, value, imageURL, ...others }: ItemProps, ref) => {
-      return (
-        <div key={id} ref={ref} style={{ marginBottom: 10 }}>
-          <Link href={`/product/${id}`}>
-            <Group noWrap>
-              <Avatar src={imageURL} />
-              <div>
-                <Text>{value}</Text>
-              </div>
-            </Group>
-          </Link>
-        </div>
-      );
-    }
-  );
+  // const AutoCompleteItem = forwardRef<HTMLDivElement, ItemProps>(
+  //   ({ id, value, imageURL, ...others }: ItemProps, ref) => {
+  //     return (
+  //       <div key={id} ref={ref} style={{ marginBottom: 10 }}>
+  //         <Link href={`/product/${id}`}>
+  //           <Group noWrap>
+  //             <Avatar src={imageURL} />
+  //             <div>
+  //               <Text>{value}</Text>
+  //             </div>
+  //           </Group>
+  //         </Link>
+  //       </div>
+  //     );
+  //   }
+  // );
 
   const items = links.map((item) => (
     <Link

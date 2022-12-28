@@ -66,7 +66,7 @@ export default function Search() {
           <>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Text size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-                Search Result for <b>"{query}"</b>
+                Search Result for <b>&quot;{query}&quot;</b>
               </Text>
               <Box sx={{ display: "flex", gap: 10 }}>
                 <Select
@@ -93,7 +93,7 @@ export default function Search() {
               </Box>
             </Box>
             <Text>
-              {data?.data.totalDocs} items found for "{query}"
+              {data?.data.totalDocs} items found for &quot;{query}&quot;
             </Text>
             <Grid columns={3}>
               <Grid.Col xs={3} sm={3} md={3} lg={3}>
