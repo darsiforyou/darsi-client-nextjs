@@ -1,6 +1,5 @@
 import {
   Card,
-  Image,
   Text,
   createStyles,
   ActionIcon,
@@ -13,6 +12,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../redux/reducers/cartRedux";
+
+import Image from "next/image";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -81,13 +82,16 @@ export function ProductCard({ product }: any) {
           }}
         >
           <Center>
-            <img
-              // src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
-              height={160}
-              src={renderImage()}
-              style={{ objectFit: "contain" }}
-              alt="Norway"
-            />
+            <Box sx={{ position: "relative" }}>
+              <Image
+                // src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                height={160}
+                width={200}
+                src={renderImage()}
+                style={{ objectFit: "contain" }}
+                alt="Norway"
+              />
+            </Box>
           </Center>
         </Card.Section>
 
