@@ -153,11 +153,7 @@ function Cart() {
         if (res.status === 200) {
           console.log(res);
           if (res.data.paymentToken) {
-            window.open(
-              "https://pakistan.paymob.com/api/acceptance/iframes/70305?payment_token=" +
-                res.data.paymentToken,
-              "_blank"
-            );
+            window.open(res.data.paymentToken);
           } else {
             dispatch(clear_cart());
             router.push("/");
@@ -335,11 +331,14 @@ function Cart() {
                     name="paymentMethod"
                     label="Payment Method"
                     withAsterisk
+                    spacing="xs"
+                    orientation="vertical"
                   >
                     <Radio value="COD" label="COD" />
-                    <Radio value="BANK" label="CARD" />
-                    <Radio value="CARD" label="Card" />
-                    <Radio value="BANK" label="Bank" />
+                    <Radio
+                      value="PAYPRO"
+                      label="Payprop - Card /bank Transfer / Jazz Cash"
+                    />
                   </Radio.Group>
                 </Box>
                 {!cart.code && (
@@ -366,7 +365,7 @@ function Cart() {
                         apply_discount_code(dispatch, code)
                           .then((res: any) => {
                             setPackage(res);
-                              showNotification({
+                            showNotification({
                               autoClose: 5000,
                               message: "Discount applied",
                               color: "red",
@@ -404,7 +403,11 @@ function Cart() {
       <Modal
         opened={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={`You can pay in cash to our courier when you receive the goods at your doorstep.`}
+        title={
+          paymentMethod === "COD"
+            ? `You can pay in cash to our courier when you receive the goods at your doorstep.`
+            : "You will be redirected to paypro to pay your amount"
+        }
         size="sm"
         centered
       >
