@@ -31,7 +31,7 @@ import {
   notification_off,
   notification_on,
 } from "../../redux/reducers/notificationRedux";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import Head from "next/head";
 
 const useStyles = createStyles((theme) => ({
@@ -92,7 +92,7 @@ function ProductDetail() {
   const { products, isFetching } = useSelector((state: any) => state.product);
   const cart = useSelector((state: any) => state.cart);
   const [qty, setQty] = useState(1);
-  const { _id } = router.query
+  const { _id } = router.query;
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -103,6 +103,16 @@ function ProductDetail() {
       let productByCat = products.filter(
         (x: any) => x.category === data.category && x._id !== data._id
       );
+      // let productByCat: any[] = [];
+      // for (const product of products) {
+      //   if (productByCat.length === 12) {
+      //     break;
+      //   }
+
+      //   let filtered =
+      //     product.category === data.category && product._id !== data._id;
+      //   productByCat.push(filtered);
+      // }
       let isFront = data.media.find((x: any) => x.isFront === true);
       let otherImages = data.media;
       setFrontImage(isFront);
@@ -200,33 +210,33 @@ function ProductDetail() {
               >
                 {images.length > 0
                   ? images.map((img: any, i: number) => (
-                    <Box
-                      key={i}
-                      component="span"
-                      sx={{
-                        position: "relative",
-                        padding: 5,
-                        border: img.isFront ? "2px solid green" : "none",
-                      }}
-                      onClick={() => {
-                        let _images: any = images || [];
-                        _images = _images.map((m: any, m_i: number) => ({
-                          ...m,
-                          isFront: i === m_i,
-                        }));
-                        setImages((prev: any) => (prev = _images));
-                        setFrontImage(img);
-                      }}
-                    >
-                      <Image
+                      <Box
                         key={i}
-                        width={65}
-                        height={65}
-                        fit="cover"
-                        src={img?.imageURL}
-                      />
-                    </Box>
-                  ))
+                        component="span"
+                        sx={{
+                          position: "relative",
+                          padding: 5,
+                          border: img.isFront ? "2px solid green" : "none",
+                        }}
+                        onClick={() => {
+                          let _images: any = images || [];
+                          _images = _images.map((m: any, m_i: number) => ({
+                            ...m,
+                            isFront: i === m_i,
+                          }));
+                          setImages((prev: any) => (prev = _images));
+                          setFrontImage(img);
+                        }}
+                      >
+                        <Image
+                          key={i}
+                          width={65}
+                          height={65}
+                          fit="cover"
+                          src={img?.imageURL}
+                        />
+                      </Box>
+                    ))
                   : null}
               </Box>
               {/* <Image
@@ -361,7 +371,8 @@ function ProductDetail() {
                   if (isOptionEmpty) {
                     showNotification({
                       autoClose: 5000,
-                      message: "Please Select all options before placing an order.",
+                      message:
+                        "Please Select all options before placing an order.",
                       color: "red",
                     });
                     return;
@@ -537,7 +548,7 @@ function ProductDetail() {
                         // dispatch(
                         //   addProductToCart({ ...product, quantity: qty })
                         // );
-                        router.push("/");
+                        router.push("/checkout");
                       }
                     }}
                   >

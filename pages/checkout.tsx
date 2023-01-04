@@ -334,7 +334,7 @@ function Cart() {
                     spacing="xs"
                     orientation="vertical"
                   >
-                    <Radio value="COD" label="COD" />
+                    <Radio value="COD" label="Cash on Delivery" />
                     <Radio
                       value="PAYPRO"
                       label="Payprop - Card /bank Transfer / Jazz Cash"
