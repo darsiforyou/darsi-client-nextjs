@@ -100,19 +100,24 @@ function ProductDetail() {
   const fetchProductDetails = () => {
     get_product(_id).then(({ data }: any) => {
       setProduct(data);
-      let productByCat = products.filter(
-        (x: any) => x.category === data.category && x._id !== data._id
-      );
-      // let productByCat: any[] = [];
-      // for (const product of products) {
-      //   if (productByCat.length === 12) {
-      //     break;
-      //   }
+      // let productByCat = products.filter(
+      //   (x: any) => x.category === data.category && x._id !== data._id
+      // );
+      let productByCat = [];
+      // for (let index = 0; index < array.length; index++) {
+      //   products[Math.floor(Math.random() * products.length)]
+      //   const element = array[index];
 
-      //   let filtered =
-      //     product.category === data.category && product._id !== data._id;
-      //   productByCat.push(filtered);
       // }
+      for (const product of products) {
+        if (productByCat.length === 12) {
+          break;
+        }
+        if (product.category === data.category && product._id !== data._id) {
+          productByCat.push(product);
+        }
+      }
+
       let isFront = data.media.find((x: any) => x.isFront === true);
       let otherImages = data.media;
       setFrontImage(isFront);
