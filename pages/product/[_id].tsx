@@ -24,7 +24,7 @@ import React, { useEffect, useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductCard } from "../../components/ProductCard";
-import { get_product } from "../../redux/action/product";
+import { getProducts, get_product } from "../../redux/action/product";
 import { addProduct, addProductToCart } from "../../redux/reducers/cartRedux";
 import ReactImageMagnify from "react-image-magnify";
 import {
@@ -97,31 +97,17 @@ function ProductDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const fetchProductDetails = () => {
-    get_product(_id).then(({ data }: any) => {
+  const fetchProductDetails = async () => {
+    await get_product(_id).then(async ({ data }: any) => {
       setProduct(data);
-      // let productByCat = products.filter(
-      //   (x: any) => x.category === data.category && x._id !== data._id
-      // );
-      let productByCat = [];
-      // for (let index = 0; index < array.length; index++) {
-      //   products[Math.floor(Math.random() * products.length)]
-      //   const element = array[index];
-
-      // }
-      for (const product of products) {
-        if (productByCat.length === 12) {
-          break;
-        }
-        if (product.category === data.category && product._id !== data._id) {
-          productByCat.push(product);
-        }
-      }
-
       let isFront = data.media.find((x: any) => x.isFront === true);
       let otherImages = data.media;
       setFrontImage(isFront);
       setImages(otherImages);
+      let productByCat = await getProducts({
+        limit: 12,
+        category: data.category,
+      });
       setProductsdata(productByCat);
       setloader(false);
     });

@@ -9,16 +9,14 @@ function HomeProducts({ cat }: any) {
   // const { products, isFetching: isFetchingProduct } = useSelector(
   //   (state: any) => state.product
   // );
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
   useEffect(() => {
-    handleFetchData()
-  }, [])
-  const handleFetchData = async ()  => {
-    let data = await getProducts({limit: 12, category: cat._id});
-    console.log(data);
-    
-    setProducts(data)
-  }
+    handleFetchData();
+  }, []);
+  const handleFetchData = async () => {
+    let data = await getProducts({ limit: 12, category: cat._id });
+    setProducts(data);
+  };
   const getCatProducts = (id: string) => {
     let productByCat = products.filter((x: any) => x.category === id);
     return productByCat;
@@ -27,17 +25,29 @@ function HomeProducts({ cat }: any) {
     return null;
   }
 
-  
   return (
-    <Container size="lg" sx={{ marginBottom: 30, backgroundColor: 'white', padding: 20 }}>
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between",alignItems: "center"}}>
+    <Container
+      size="lg"
+      sx={{ marginBottom: 30, backgroundColor: "white", padding: 20 }}
+    >
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Link href={`/products?category_id=${cat._id}`}>
           <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
             {cat.title}
           </Text>
         </Link>
         <Link href={`/products?category_id=${cat._id}`}>
-          <Text size="xs" sx={{ lineHeight: 1, marginBottom: 20, color: "#f85606"}}>
+          <Text
+            size="xs"
+            sx={{ lineHeight: 1, marginBottom: 20, color: "#f85606" }}
+          >
             See More{">"}
           </Text>
         </Link>
@@ -45,9 +55,9 @@ function HomeProducts({ cat }: any) {
       <SimpleGrid
         breakpoints={[
           { minWidth: 300, cols: 2 },
-          { minWidth: 'xs', cols: 3 },
-          { minWidth: 'sm', cols: 4 },
-          { minWidth: 'md', cols: 6 },
+          { minWidth: "xs", cols: 3 },
+          { minWidth: "sm", cols: 4 },
+          { minWidth: "md", cols: 6 },
         ]}
       >
         {(products || []).map((product: any, i: number) => (

@@ -17,7 +17,7 @@ function Layout({ children }: any) {
   useEffect(() => {
     const fetchData = async () => {
       await get_categories(dispatch);
-      await get_products(dispatch);
+      // await get_products(dispatch);
       await get_popular_products(dispatch);
 
       setloader(false);
@@ -39,8 +39,6 @@ function Layout({ children }: any) {
         color: notification.type === "Success" ? "lime" : "red",
       });
   }, [notification.isOpen]);
-
-
 
   if (loader) {
     return (
