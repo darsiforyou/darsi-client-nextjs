@@ -40,21 +40,21 @@ function Layout({ children }: any) {
       });
   }, [notification.isOpen]);
 
-  if (loader) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Loader size="xl" variant="bars" />
-      </div>
-    );
-  }
+  // if (loader) {
+  //   return (
+  //     <div
+  //       style={{
+  //         minHeight: "100vh",
+  //         width: "100%",
+  //         display: "flex",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //       }}
+  //     >
+  //       <Loader size="xl" variant="bars" />
+  //     </div>
+  //   );
+  // }
   return (
     <>
       <HeaderResponsive

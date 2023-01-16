@@ -11,24 +11,25 @@ function Home() {
     (state: any) => state.category
   );
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <Head>
         <title>Darsi | Home</title>
+        <link rel="shortcut icon" href="/darsi-logo.png" />
+
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Banner />
       <HomeCategory />
       <HomePopularProducts />
-      {
-        !isFetching && categories.map((cat: any) => (
+      {!isFetching &&
+        categories.map((cat: any) => (
           <div key={cat._id}>
             <HomeProducts cat={cat} />
           </div>
-        ))
-      }
+        ))}
     </>
   );
 }
