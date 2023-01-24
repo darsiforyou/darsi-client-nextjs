@@ -113,7 +113,7 @@ export interface Vendor {
 const useStyles: any = createStyles((theme) => ({
   root: {
     position: "sticky",
-    zIndex: 1,
+    zIndex: 3,
     height: 120,
     [theme.fn.smallerThan("sm")]: {
       height: 60,
