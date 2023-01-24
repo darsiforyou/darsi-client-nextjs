@@ -153,7 +153,7 @@ function Cart() {
         if (res.status === 200) {
           console.log(res);
           if (res.data.paymentToken) {
-            window.open(res.data.paymentToken);
+            window.location.replace(res.data.paymentToken);
           } else {
             dispatch(clear_cart());
             router.push("/");
