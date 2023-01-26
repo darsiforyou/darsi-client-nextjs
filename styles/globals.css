@@ -10,7 +10,7 @@ a{
     color: black;
 }
 /* // Osama Css */
-@media (max-width : 991px){
+/* @media (max-width : 991px){
     body header.mantine-Header-root {
         z-index: 3;
         height: 100px;
@@ -21,16 +21,11 @@ a{
 }
 
 @media (max-width: 767px){
-    /* .header.mantine-Header-root .mantine-6i13iz {
-        height: 100px;
-    } */
+  
     .mantine-1vghtr5 {
         padding: 50px 0;
     }
-    /* .mantine-woyoh2 .mantine-6siwbt,
-    .mantine-woyoh2 .mantine-gikplz {
-        margin-bottom: 0px;
-    } */
+
     .mantine-l7j47y {
         margin-top: 20px;
         padding: 25px 0;
@@ -58,4 +53,4 @@ a{
         height: 18px;
     }
 }
-    
+     */
