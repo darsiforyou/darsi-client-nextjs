@@ -10,7 +10,7 @@ a{
     color: black;
 }
 /* // Osama Css */
-/* @media (max-width : 991px){
+ @media (max-width : 991px){
     body header.mantine-Header-root {
         z-index: 3;
         height: 100px;
@@ -19,7 +19,7 @@ a{
         width: 100px;
     }
 }
-
+/*
 @media (max-width: 767px){
   
     .mantine-1vghtr5 {
