@@ -22,13 +22,37 @@ export default function Search() {
   const { category_id } = query;
   const [activePage, setPage] = useState(1);
   const [sort, setSort] = useState("RECENT");
+  const [brand, setBrand] = useState("");
   const [_categories, set_Categories] = useState([]);
-  const [category, setCategory] = useState(Array.isArray(category_id) ? category_id[0] : category_id || "");
-  const { data, isFetching, refetch } = useQuery<ApiResponse<Product>>({
-    queryKey: ["products"],
+  const [category, setCategory] = useState(
+    Array.isArray(category_id) ? category_id[0] : category_id || ""
+  );
+  const { data: brands, isFetching: isFetchingBrands } = useQuery({
+    queryKey: ["brands"],
     queryFn: async () => {
+      const res = await publicRequest.get(`/brands?limit=1000`);
+      const data = res.data.data.docs;
+      console.log(data);
+      const brands = data.map((brand: any) => ({
+        value: brand._id,
+        label: brand.title,
+      }));
+      return brands;
+    },
+  });
+  const [filters, setFilters] = useState({
+    page: activePage,
+    sort: sort,
+    category: category,
+    brand: brand,
+  });
+  const { data, isFetching, refetch } = useQuery<ApiResponse<Product>>({
+    queryKey: ["products", filters],
+    queryFn: async ({ queryKey }: any) => {
+      const [_, { page, sort, category, brand, ...filters }] = queryKey;
+      const params = new URLSearchParams(filters);
       const res = await publicRequest.get(
-        `/products?page=${activePage}&limit=48&isActive=true&sort=${sort}&category=${category}`
+        `/products?page=${page}&limit=48&isActive=true&sort=${sort}&category=${category}&brand=${brand}`
       );
       const data = res.data;
       return data;
@@ -82,9 +106,9 @@ export default function Search() {
                   label="Category"
                   data={_categories}
                   placeholder="Select a category"
-                  value={category}
+                  value={filters.category}
                   onChange={(e: any) => {
-                    setCategory(e);
+                    setFilters((prev) => ({ ...prev, page: 1, category: e }));
                   }}
                 />
                 <Select
@@ -94,9 +118,18 @@ export default function Search() {
                     { label: "Price High to low", value: "PRICE_HIGH_TO_LOW" },
                     { label: "Price low to High", value: "PRICE_LOW_TO_HIGH" },
                   ]}
-                  value={sort}
+                  value={filters.sort}
                   onChange={(e: any) => {
-                    setSort(e);
+                    setFilters((prev) => ({ ...prev, page: 1, sort: e }));
+                  }}
+                />
+                <Select
+                  label="Brands"
+                  data={brands}
+                  value={filters.brand}
+                  placeholder="Select Brand"
+                  onChange={(e: any) => {
+                    setFilters((prev) => ({ ...prev, page: 1, brand: e }));
                   }}
                 />
               </Box>

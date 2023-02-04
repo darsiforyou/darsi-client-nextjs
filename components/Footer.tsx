@@ -97,7 +97,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface FooterLinksProps {
-  links: any[]
+  links: any[];
 }
 
 export function FooterLinks({ links }: FooterLinksProps) {
@@ -112,19 +112,23 @@ export function FooterLinks({ links }: FooterLinksProps) {
       link: `/products?category_id=${category._id}`,
     }));
     setFooterCategories(cats);
-  }, []);
+  }, [isFetching]);
 
- 
   return (
     <footer className={classes.footer}>
       <Container size="lg">
         <Grid columns={24} justify="center">
           <Grid.Col md={12} xs={24} className={classes.logo}>
-              <Image src={'/darsi-logo.png'} alt="Logo" width={100} height={100} />
-              <Text size="xs" color="dimmed" className={classes.description}>
-                Build fully functional accessible web applications faster than
-                ever
-              </Text>
+            <Image
+              src={"/darsi-logo.png"}
+              alt="Logo"
+              width={100}
+              height={100}
+            />
+            <Text size="xs" color="dimmed" className={classes.description}>
+              DON{"`"}T COMPROMISE ON QUALITY OF EDUCATION. CONSULT US FOR
+              PUBLICATIONS
+            </Text>
           </Grid.Col>
           <Grid.Col md={6} xs={12} className={classes.links}>
             <Text className={classes.title}>Pages</Text>
@@ -136,7 +140,7 @@ export function FooterLinks({ links }: FooterLinksProps) {
           </Grid.Col>
           <Grid.Col md={6} xs={12} className={classes.links}>
             <Text className={classes.title}>Categories</Text>
-            {footerCategories.slice(0,5).map((link: any, index) => (
+            {footerCategories.slice(0, 5).map((link: any, index) => (
               <Link href={link.link} key={index} className={classes.link}>
                 {link.label}
               </Link>
@@ -145,10 +149,6 @@ export function FooterLinks({ links }: FooterLinksProps) {
         </Grid>
       </Container>
       <Container size="lg" className={classes.afterFooter}>
-        <Text color="dimmed" size="sm">
-          © {new Date().getFullYear()} mantine.dev. All rights reserved.
-        </Text>
-
         <Group spacing={0} className={classes.social} position="right" noWrap>
           <ActionIcon size="lg">
             <IconBrandTwitter size={18} stroke={1.5} />
