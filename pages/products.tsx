@@ -110,6 +110,7 @@ export default function Search() {
                   onChange={(e: any) => {
                     setFilters((prev) => ({ ...prev, page: 1, category: e }));
                   }}
+                  clearable
                 />
                 <Select
                   label="Sort By"
@@ -118,6 +119,7 @@ export default function Search() {
                     { label: "Price High to low", value: "PRICE_HIGH_TO_LOW" },
                     { label: "Price low to High", value: "PRICE_LOW_TO_HIGH" },
                   ]}
+                  clearable
                   value={filters.sort}
                   onChange={(e: any) => {
                     setFilters((prev) => ({ ...prev, page: 1, sort: e }));
@@ -128,6 +130,7 @@ export default function Search() {
                   data={brands}
                   value={filters.brand}
                   placeholder="Select Brand"
+                  clearable
                   onChange={(e: any) => {
                     setFilters((prev) => ({ ...prev, page: 1, brand: e }));
                   }}

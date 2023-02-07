@@ -31,11 +31,11 @@ const useStyles = createStyles((theme) => ({
     }`,
   },
   image: {
-    height: "100px !important",
+    // height: "100px !important",
     width: "100%",
     "& img": {
       width: "100%",
-      height: "100px !important",
+      // height: "100px !important",
       objectFit: "contain",
     },
   },

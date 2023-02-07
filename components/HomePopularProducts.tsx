@@ -1,12 +1,27 @@
-import { Box, Container, SimpleGrid, Text } from "@mantine/core";
+import {
+  Box,
+  Center,
+  Container,
+  Loader,
+  SimpleGrid,
+  Text,
+} from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { publicRequest } from "../requestMethods";
 import { ProductCard } from "./ProductCard";
 
 function HomePopularProducts() {
-  const { p_products, isFetching } = useSelector(
-    (state: any) => state.popularProduct
-  );
+  const { data: products, isFetching } = useQuery({
+    queryKey: ["popular-products"],
+    queryFn: async () => {
+      const res = await publicRequest("/dashboard/top-products?limit=12");
+      const data = res.data;
+      return data;
+    },
+  });
+
   return (
     <Container
       size="lg"
@@ -41,12 +56,15 @@ function HomePopularProducts() {
           { minWidth: "md", cols: 6 },
         ]}
       >
-        {!isFetching &&
-          p_products?.map((product: any, i: number) => (
-            <div key={i}>
-              <ProductCard product={product} />
-            </div>
-          ))}
+        {/* {isFetching ? (
+          <Center>
+            <Loader />
+          </Center>
+        ) : (
+          products?.data.map((product: any) => (
+            <ProductCard key={product._id} product={product} />
+          ))
+        )} */}
       </SimpleGrid>
     </Container>
   );
