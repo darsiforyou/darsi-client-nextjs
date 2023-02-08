@@ -34,6 +34,8 @@ import {
 import CITIES from "../assets/cities.json";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { useQuery } from "@tanstack/react-query";
+import { publicRequest } from "../requestMethods";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -147,6 +149,14 @@ function Cart() {
       address: (value) => (!value ? "Address is required" : null),
     },
   });
+  const { data: shipping } = useQuery({
+    queryKey: ["shipping"],
+    queryFn: async () => {
+      const res = await publicRequest("/shippings");
+      const data = res.data.data[0];
+      return data;
+    },
+  });
   const handleConfirmCart = () => {
     createOrder(cartData)
       .then((res: any) => {
@@ -207,6 +217,8 @@ function Cart() {
     cartData.postalCode = values.postalCode;
     cartData.phone = values.phone;
     cartData.paymentMethod = paymentMethod;
+    cartData.shippingCharges =
+      form.values.city === "Karachi" ? shipping?.inCity : shipping?.outCity;
     setCartData(cartData);
   };
   return (
@@ -304,8 +316,8 @@ function Cart() {
                           Rs.{" "}
                           {form.values.city
                             ? form.values.city === "Karachi"
-                              ? 50
-                              : 100
+                              ? shipping?.inCity
+                              : shipping?.outCity
                             : 0}
                         </td>
                       </tr>
@@ -317,7 +329,9 @@ function Cart() {
                         <td>Total:</td>
                         <td>
                           Rs.
-                          {(form.values.city === "Karachi" ? 50 : 100) +
+                          {(form.values.city === "Karachi"
+                            ? shipping?.inCity
+                            : shipping?.outCity) +
                             (cart.total - cart.discount)}
                         </td>
                       </tr>
