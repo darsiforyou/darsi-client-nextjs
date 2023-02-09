@@ -5,6 +5,7 @@ import {
   Container,
   createStyles,
   Grid,
+  LoadingOverlay,
   Modal,
   Radio,
   ScrollArea,
@@ -157,9 +158,12 @@ function Cart() {
       return data;
     },
   });
+  const [loadingCheckout, setloadingCheckout] = useState(false);
   const handleConfirmCart = () => {
+    setloadingCheckout(true)
     createOrder(cartData)
-      .then((res: any) => {
+    .then((res: any) => {
+        setloadingCheckout(false)
         if (res.status === 200) {
           console.log(res);
           if (res.data.paymentToken) {
@@ -176,6 +180,7 @@ function Cart() {
         }
       })
       .catch((error: any) => {
+        setloadingCheckout(false)
         showNotification({
           autoClose: 5000,
           message: "Something went wrong!",
@@ -437,6 +442,7 @@ function Cart() {
           CONFIRM ORDER
         </Button>
       </Modal>
+      <LoadingOverlay visible={loadingCheckout} overlayBlur={2} />
     </>
   );
 }
