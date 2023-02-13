@@ -45,11 +45,15 @@ const useStyles = createStyles((theme) => ({
   },
 
   description: {
-    marginTop: 5,
+    marginTop: 8,
+    color: "green" ,
     [theme.fn.smallerThan("sm")]: {
       marginTop: theme.spacing.xs,
+     
+      fontWeight: "bolder",
       // textAlign: "center",
     },
+    
   },
   link: {
     display: "block",
@@ -122,34 +126,14 @@ export function FooterLinks({ links }: FooterLinksProps) {
             <Image
               src={"/darsi-logo.png"}
               alt="Logo"
-              width={100}
+              width={80}
               height={100}
             />
-            <Text size="xs" color="dimmed" className={classes.description}>
-              DON{"`"}T COMPROMISE ON QUALITY OF EDUCATION. CONSULT US FOR
+            <Text size="xs"  className={classes.description}>
+              DON{"`"}T COMPROMISE ON QUALITY OF EDUCATION. <br></br>CONSULT US FOR
               PUBLICATIONS
             </Text>
-          </Grid.Col>
-          <Grid.Col md={6} xs={12} className={classes.links}>
-            <Text className={classes.title}>Pages</Text>
-            {links.map((link: any, index) => (
-              <Link href={link.link} key={index} className={classes.link}>
-                {link.label}
-              </Link>
-            ))}
-          </Grid.Col>
-          <Grid.Col md={6} xs={12} className={classes.links}>
-            <Text className={classes.title}>Categories</Text>
-            {footerCategories.slice(0, 5).map((link: any, index) => (
-              <Link href={link.link} key={index} className={classes.link}>
-                {link.label}
-              </Link>
-            ))}
-          </Grid.Col>
-        </Grid>
-      </Container>
-      <Container size="lg" className={classes.afterFooter}>
-        <Group spacing={0} className={classes.social} position="right" noWrap>
+            <Group spacing={0} className={classes.social} position="left" mt="xl" noWrap>
           <ActionIcon size="lg">
             <IconBrandTwitter size={18} stroke={1.5} />
           </ActionIcon>
@@ -160,6 +144,35 @@ export function FooterLinks({ links }: FooterLinksProps) {
             <IconBrandInstagram size={18} stroke={1.5} />
           </ActionIcon>
         </Group>
+          </Grid.Col>
+          <Grid.Col md={4} xs={12} className={classes.links}>
+            <Text className={classes.title}>Pages</Text>
+            {links.map((link: any, index) => (
+              <Link href={link.link} key={index} className={classes.link}>
+                {link.label}
+              </Link>
+            ))}
+          </Grid.Col>
+          <Grid.Col md={4} xs={12} className={classes.links}>
+            <Text className={classes.title}>Pages</Text>
+            {links.map((link: any, index) => (
+              <Link href={link.link} key={index} className={classes.link}>
+                {link.label}
+              </Link>
+            ))}
+          </Grid.Col>
+          <Grid.Col md={4} xs={12} className={classes.links}>
+            <Text className={classes.title}>Categories</Text>
+            {footerCategories.slice(0, 5).map((link: any, index) => (
+              <Link href={link.link} key={index} className={classes.link}>
+                {link.label}
+              </Link>
+            ))}
+          </Grid.Col>
+        </Grid>
+      </Container>
+      <Container size="lg" className={classes.afterFooter}>
+        
       </Container>
     </footer>
   );
