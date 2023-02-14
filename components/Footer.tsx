@@ -5,6 +5,7 @@ import {
   ActionIcon,
   Group,
   Grid,
+  Anchor,
 } from "@mantine/core";
 import {
   IconBrandTwitter,
@@ -47,15 +48,14 @@ const useStyles = createStyles((theme) => ({
 
   description: {
     marginTop: 8,
-    color: "#4d539f" ,
+    color: "#4d539f",
     fontWeight: 700,
     [theme.fn.smallerThan("sm")]: {
       marginTop: theme.spacing.xs,
-     
+
       fontWeight: "bolder",
       // textAlign: "center",
     },
-    
   },
   link: {
     display: "block",
@@ -78,30 +78,28 @@ const useStyles = createStyles((theme) => ({
     marginBottom: theme.spacing.xs / 2,
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
   },
-    mycontact:{
-          color: "#000",
-          fontSize: theme.fontSizes.lg,
-          fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-          // textAlign: "center",
-          fontWeight: "bold",
-         marginLeft: theme.spacing.lg / 2,
-         paddingLeft: "10%",
-      },
-      ulitem:{
-       color:
+  mycontact: {
+    color: "#000",
+    fontSize: theme.fontSizes.lg,
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    // textAlign: "center",
+    fontWeight: "bold",
+    //  marginLeft: theme.spacing.lg / 2,
+    // paddingLeft: "10%",
+  },
+  ulitem: {
+    color:
       theme.colorScheme === "dark"
         ? theme.colors.dark[1]
         : theme.colors.gray[6],
     fontSize: theme.fontSizes.sm,
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    listStyleType: "none"
-    
-      },
-      liitems:{
-        paddingTop: 3,
-        marginTop: 3,
-   
-      },
+    listStyleType: "none",
+  },
+  liitems: {
+    paddingTop: 3,
+    marginTop: 3,
+  },
   afterFooter: {
     display: "flex",
     justifyContent: "space-between",
@@ -151,26 +149,36 @@ export function FooterLinks({ links }: FooterLinksProps) {
             <Image
               src={"/darsi-logo.png"}
               alt="Logo"
-              width={80}
+              width={100}
               height={100}
             />
-            <Text size="xs"  className={classes.description}>
-              DON{"`"}T COMPROMISE ON QUALITY OF EDUCATION. <br></br>CONSULT US FOR
-              PUBLICATIONS
+            <Text size="xs" className={classes.description}>
+              DON{"`"}T COMPROMISE ON QUALITY OF EDUCATION. <br></br>CONSULT US
+              FOR PUBLICATIONS
             </Text>
-            <Group spacing={0} className={classes.social} position="left" mt="xl" noWrap>
-          <ActionIcon size="lg">
-            <Link href="https://www.facebook.com/profile.php?id=100090313983035&mibextid=ZbWKwL"><IconBrandFacebook size={18} stroke={1.5} /></Link>
-          </ActionIcon>
-          <ActionIcon size="lg">
-            <IconBrandYoutube size={18} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon size="lg">
-            <IconBrandInstagram size={18} stroke={1.5} />
-          </ActionIcon>
-        </Group>
+            <Group
+              spacing={0}
+              className={classes.social}
+              position="left"
+              mt="xl"
+              noWrap
+            >
+              <ActionIcon
+                component="a"
+                href="https://www.facebook.com/profile.php?id=100090313983035&mibextid=ZbWKwL"
+                size="xl"
+              >
+                <IconBrandFacebook size={18} stroke={1.5} />
+              </ActionIcon>
+              <ActionIcon size="xl">
+                <IconBrandYoutube size={18} stroke={1.5} />
+              </ActionIcon>
+              <ActionIcon size="xl">
+                <IconBrandInstagram size={18} stroke={1.5} />
+              </ActionIcon>
+            </Group>
           </Grid.Col>
-          <Grid.Col md={2} xs={12} className={classes.links}>
+          <Grid.Col md={4} xs={24} className={classes.links}>
             <Text className={classes.title}>Pages</Text>
             {links.map((link: any, index) => (
               <Link href={link.link} key={index} className={classes.link}>
@@ -178,7 +186,7 @@ export function FooterLinks({ links }: FooterLinksProps) {
               </Link>
             ))}
           </Grid.Col>
-          <Grid.Col md={4} xs={12} className={classes.links}>
+          <Grid.Col md={4} xs={24} className={classes.links}>
             <Text className={classes.title}>Categories</Text>
             {footerCategories.slice(0, 5).map((link: any, index) => (
               <Link href={link.link} key={index} className={classes.link}>
@@ -186,23 +194,23 @@ export function FooterLinks({ links }: FooterLinksProps) {
               </Link>
             ))}
           </Grid.Col>
-          <Grid.Col md={6} xs={12} className={classes.links}>
-            <Text className={classes.mycontact}>Contact Us</Text>
-           <>
-           <ul className={classes.ulitem}>
-            <li className={classes.liitems}>Sales : sale@darsi.pk</li>
-            <li className={classes.liitems}>Support: support@darsi.pk</li>
-            <li className={classes.liitems}>Query: info@darsi.pk</li>
-            <li className={classes.liitems}>Whatapp: +92 300 0206761</li>
-           </ul>
-           </>
+          <Grid.Col md={4} xs={24} className={classes.links}>
+            <Text className={classes.title}>Contact Us</Text>
+            {/* {footerCategories.slice(0, 5).map((link: any, index) => (
+              <Link href={link.link} key={index} className={classes.link}>
+                {link.label}
+              </Link>
+            ))} */}
+            <a className={classes.link}>Sales : sale@darsi.pk</a>
+            <a className={classes.link}>Support: support@darsi.pk</a>
+            <a className={classes.link}>Query: info@darsi.pk</a>
+            <a className={classes.link}>
+              Whatapp: <br /> +92 300 0206761
+            </a>
           </Grid.Col>
-          
         </Grid>
       </Container>
-      <Container size="lg" className={classes.afterFooter}>
-        
-      </Container>
+      <Container size="lg" className={classes.afterFooter}></Container>
     </footer>
   );
 }

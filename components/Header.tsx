@@ -320,8 +320,8 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
       <Header height={HEADER_HEIGHT} className={classes.root}>
         <Container size="lg" className={classes.topHeader}>
           <a
-            href="https://dashboard.darsi.pk/vendor/signup"
             className={classes.upperLink}
+            href="https://dashboard.darsi.pk/vendor/signup"
             target="_blank"
             rel="noreferrer"
           >
@@ -524,12 +524,22 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
                   <Link href="/cart" className={cx(classes.link)}>
                     Cart
                   </Link>
-                  <Link href="/register/Vendor" className={cx(classes.link)}>
+                  <a
+                    href="https://dashboard.darsi.pk/vendor/signup"
+                    target="_blank"
+                    rel="noreferrer"
+                    className={cx(classes.link)}
+                  >
                     Become a Vendor
-                  </Link>
-                  <Link className={cx(classes.link)} href="/register/Referrer">
+                  </a>
+                  <a
+                    className={cx(classes.link)}
+                    href="https://dashboard.darsi.pk/ref/signup"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Signup as Referrer
-                  </Link>
+                  </a>
                   {!user?._id && (
                     <Link
                       className={cx(classes.link)}

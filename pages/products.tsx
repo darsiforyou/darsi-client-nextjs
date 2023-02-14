@@ -45,7 +45,7 @@ export default function Search() {
     sort: sort,
     category: category,
     brand: brand,
-    targetAge: "8",
+    targetAge: "",
   });
   const { data, isFetching, refetch } = useQuery<ApiResponse<Product>>({
     queryKey: ["products", filters],
@@ -107,8 +107,9 @@ export default function Search() {
                 <Select
                   label="Age"
                   data={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
-                  placeholder="Select a category"
+                  placeholder="Select age"
                   value={filters.targetAge}
+                  clearable
                   onChange={(e: any) => {
                     setFilters((prev) => ({ ...prev, page: 1, targetAge: e }));
                   }}
