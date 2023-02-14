@@ -356,7 +356,7 @@ function Cart() {
                     <Radio value="COD" label="Cash on Delivery" />
                     <Radio
                       value="PAYPRO"
-                      label="Payprop - Card /bank Transfer / Jazz Cash"
+                      label="Card Payment / Easypaisa / Jazz Cash"
                     />
                   </Radio.Group>
                 </Box>
