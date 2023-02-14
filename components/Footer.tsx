@@ -94,6 +94,7 @@ const useStyles = createStyles((theme) => ({
         : theme.colors.gray[6],
     fontSize: theme.fontSizes.sm,
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    listStyleType: "none"
     
       },
       liitems:{
