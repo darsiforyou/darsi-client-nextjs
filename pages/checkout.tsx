@@ -15,27 +15,16 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconSquareX } from "@tabler/icons";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { showNotification } from "@mantine/notifications";
-import { QuantityInput } from "../components/QuantityInput";
+import { useQuery } from "@tanstack/react-query";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import CITIES from "../assets/cities.json";
 import { createOrder } from "../redux/action/create_order";
 import { apply_discount_code } from "../redux/action/discount_code";
-import {
-  addProduct,
-  addProductToCart,
-  clearProductFromCart,
-  clear_cart,
-} from "../redux/reducers/cartRedux";
-import {
-  notification_off,
-  notification_on,
-} from "../redux/reducers/notificationRedux";
-import CITIES from "../assets/cities.json";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { useQuery } from "@tanstack/react-query";
+import { clear_cart } from "../redux/reducers/cartRedux";
 import { publicRequest } from "../requestMethods";
 
 const useStyles = createStyles((theme) => ({
@@ -160,10 +149,10 @@ function Cart() {
   });
   const [loadingCheckout, setloadingCheckout] = useState(false);
   const handleConfirmCart = () => {
-    setloadingCheckout(true)
+    setloadingCheckout(true);
     createOrder(cartData)
-    .then((res: any) => {
-        setloadingCheckout(false)
+      .then((res: any) => {
+        setloadingCheckout(false);
         if (res.status === 200) {
           console.log(res);
           if (res.data.paymentToken) {
@@ -180,7 +169,7 @@ function Cart() {
         }
       })
       .catch((error: any) => {
-        setloadingCheckout(false)
+        setloadingCheckout(false);
         showNotification({
           autoClose: 5000,
           message: "Something went wrong!",

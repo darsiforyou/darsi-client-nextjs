@@ -45,14 +45,16 @@ export default function Search() {
     sort: sort,
     category: category,
     brand: brand,
+    targetAge: "8",
   });
   const { data, isFetching, refetch } = useQuery<ApiResponse<Product>>({
     queryKey: ["products", filters],
     queryFn: async ({ queryKey }: any) => {
-      const [_, { page, sort, category, brand, ...filters }] = queryKey;
+      const [_, { page, sort, category, brand, targetAge, ...filters }] =
+        queryKey;
       const params = new URLSearchParams(filters);
       const res = await publicRequest.get(
-        `/products?page=${page}&limit=48&isActive=true&sort=${sort}&category=${category}&brand=${brand}`
+        `/products?page=${page}&limit=48&isActive=true&sort=${sort}&category=${category}&brand=${brand}&targetAge=${targetAge}`
       );
       const data = res.data;
       return data;
@@ -102,6 +104,15 @@ export default function Search() {
                 All Products
               </Text>
               <Box sx={{ display: "flex", gap: 10 }}>
+                <Select
+                  label="Age"
+                  data={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+                  placeholder="Select a category"
+                  value={filters.targetAge}
+                  onChange={(e: any) => {
+                    setFilters((prev) => ({ ...prev, page: 1, targetAge: e }));
+                  }}
+                />
                 <Select
                   label="Category"
                   data={_categories}

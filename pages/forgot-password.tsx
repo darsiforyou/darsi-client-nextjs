@@ -1,24 +1,23 @@
 import {
-  Container,
-  Text,
-  TextInput,
   Button,
+  Container,
   Group,
   PasswordInput,
+  Text,
+  TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { changeUserPassword, forgotPasswordOTP } from "../redux/action/auth_api";
-import {
-  notification_off,
-  notification_on,
-} from "../redux/reducers/notificationRedux";
-import { useRouter } from "next/router";
 import { showNotification } from "@mantine/notifications";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  changeUserPassword,
+  forgotPasswordOTP,
+} from "../redux/action/auth_api";
 function ForgotPassword() {
-  const [isOtpSend, setIsOtpSend] = useState(false)
+  const [isOtpSend, setIsOtpSend] = useState(false);
   const form = useForm({
     validateInputOnChange: true,
     initialValues: {
@@ -28,13 +27,16 @@ function ForgotPassword() {
     },
     validate: {
       user_email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      otp_code: (value) => (isOtpSend ? !value ? "Code is Required" : null : null),
+      otp_code: (value) =>
+        isOtpSend ? (!value ? "Code is Required" : null) : null,
       new_password: (value) =>
-      (isOtpSend ? /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
-        value
-      )
-        ? null
-        : "Minimum eight characters, at least one special character, one letter and one number" : null),
+        isOtpSend
+          ? /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
+              value
+            )
+            ? null
+            : "Minimum eight characters, at least one special character, one letter and one number"
+          : null,
     },
   });
   const dispatch = useDispatch();
@@ -47,7 +49,7 @@ function ForgotPassword() {
         message: "Something went wrong!",
         color: "red",
       });
-      
+
       return;
     }
     showNotification({
@@ -55,9 +57,9 @@ function ForgotPassword() {
       message: res.data?.message,
       color: "green",
     });
-   
-    setIsOtpSend(true)
-  }
+
+    setIsOtpSend(true);
+  };
   const handleChangePassword = async (values: any) => {
     let res = await changeUserPassword(values);
     if (res.status !== 200) {
@@ -75,12 +77,12 @@ function ForgotPassword() {
     });
     // setIsOtpSend(false)
     // navigate("/login", { replace: true });
-  }
+  };
   const handleSubmit = (values: any) => {
     if (isOtpSend) {
-      handleChangePassword(values)
+      handleChangePassword(values);
     } else {
-      handleGetOtp(values)
+      handleGetOtp(values);
     }
   };
   useEffect(() => {
@@ -113,24 +115,22 @@ function ForgotPassword() {
             placeholder="Enter Your Email"
             {...form.getInputProps("user_email")}
           />
-          {
-            isOtpSend && (
-              <>
-                <PasswordInput
-                  placeholder="Enter Your New Password"
-                  label="New Password"
-                  withAsterisk
-                  {...form.getInputProps("new_password")}
-                />
-                <TextInput
-                  withAsterisk
-                  label="OPT Code"
-                  placeholder="Enter OTP Code"
-                  {...form.getInputProps("otp_code")}
-                />
-              </>
-            )
-          }
+          {isOtpSend && (
+            <>
+              <PasswordInput
+                placeholder="Enter Your New Password"
+                label="New Password"
+                withAsterisk
+                {...form.getInputProps("new_password")}
+              />
+              <TextInput
+                withAsterisk
+                label="OPT Code"
+                placeholder="Enter OTP Code"
+                {...form.getInputProps("otp_code")}
+              />
+            </>
+          )}
           <Group position="right" mt="md">
             <Button type="button" variant="subtle" radius="xs" size="xs">
               Resend Code
