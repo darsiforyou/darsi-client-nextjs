@@ -10,6 +10,7 @@ import {
   IconBrandTwitter,
   IconBrandYoutube,
   IconBrandInstagram,
+  IconBrandFacebook,
 } from "@tabler/icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,7 +47,8 @@ const useStyles = createStyles((theme) => ({
 
   description: {
     marginTop: 8,
-    color: "green" ,
+    color: "#4d539f" ,
+    fontWeight: 700,
     [theme.fn.smallerThan("sm")]: {
       marginTop: theme.spacing.xs,
      
@@ -76,7 +78,29 @@ const useStyles = createStyles((theme) => ({
     marginBottom: theme.spacing.xs / 2,
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
   },
-
+    mycontact:{
+          color: "#000",
+          fontSize: theme.fontSizes.lg,
+          fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+          // textAlign: "center",
+          fontWeight: "bold",
+         marginLeft: theme.spacing.lg / 2,
+         paddingLeft: "10%",
+      },
+      ulitem:{
+       color:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[1]
+        : theme.colors.gray[6],
+    fontSize: theme.fontSizes.sm,
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    
+      },
+      liitems:{
+        paddingTop: 3,
+        marginTop: 3,
+   
+      },
   afterFooter: {
     display: "flex",
     justifyContent: "space-between",
@@ -135,7 +159,7 @@ export function FooterLinks({ links }: FooterLinksProps) {
             </Text>
             <Group spacing={0} className={classes.social} position="left" mt="xl" noWrap>
           <ActionIcon size="lg">
-            <IconBrandTwitter size={18} stroke={1.5} />
+            <Link href="https://www.facebook.com/profile.php?id=100090313983035&mibextid=ZbWKwL"><IconBrandFacebook size={18} stroke={1.5} /></Link>
           </ActionIcon>
           <ActionIcon size="lg">
             <IconBrandYoutube size={18} stroke={1.5} />
@@ -145,15 +169,7 @@ export function FooterLinks({ links }: FooterLinksProps) {
           </ActionIcon>
         </Group>
           </Grid.Col>
-          <Grid.Col md={4} xs={12} className={classes.links}>
-            <Text className={classes.title}>Pages</Text>
-            {links.map((link: any, index) => (
-              <Link href={link.link} key={index} className={classes.link}>
-                {link.label}
-              </Link>
-            ))}
-          </Grid.Col>
-          <Grid.Col md={4} xs={12} className={classes.links}>
+          <Grid.Col md={2} xs={12} className={classes.links}>
             <Text className={classes.title}>Pages</Text>
             {links.map((link: any, index) => (
               <Link href={link.link} key={index} className={classes.link}>
@@ -169,6 +185,18 @@ export function FooterLinks({ links }: FooterLinksProps) {
               </Link>
             ))}
           </Grid.Col>
+          <Grid.Col md={6} xs={12} className={classes.links}>
+            <Text className={classes.mycontact}>Contact Us</Text>
+           <>
+           <ul className={classes.ulitem}>
+            <li className={classes.liitems}>Sales : sale@darsi.pk</li>
+            <li className={classes.liitems}>Support: support@darsi.pk</li>
+            <li className={classes.liitems}>Query: info@darsi.pk</li>
+            <li className={classes.liitems}>Whatapp: +92 300 0206761</li>
+           </ul>
+           </>
+          </Grid.Col>
+          
         </Grid>
       </Container>
       <Container size="lg" className={classes.afterFooter}>
