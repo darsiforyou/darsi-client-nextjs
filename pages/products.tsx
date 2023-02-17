@@ -137,7 +137,7 @@ export default function Search() {
                 />
                 <Select
                   label="Brands"
-                  data={brands}
+                  data={[{ label: "All", value: "" }, ...brands]}
                   value={filters.brand}
                   placeholder="Select Brand"
                   clearable

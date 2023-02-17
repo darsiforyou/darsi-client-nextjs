@@ -16,7 +16,7 @@ function HomePopularProducts() {
   const { data: products, isFetching } = useQuery({
     queryKey: ["popular-products"],
     queryFn: async () => {
-      const res = await publicRequest("/dashboard/top-products?limit=12");
+      const res = await publicRequest("/orders/popular-products");
       const data = res.data;
       return data;
     },
@@ -56,7 +56,7 @@ function HomePopularProducts() {
           { minWidth: "md", cols: 6 },
         ]}
       >
-        {/* {isFetching ? (
+        {isFetching ? (
           <Center>
             <Loader />
           </Center>
@@ -64,7 +64,7 @@ function HomePopularProducts() {
           products?.data.map((product: any) => (
             <ProductCard key={product._id} product={product} />
           ))
-        )} */}
+        )}
       </SimpleGrid>
     </Container>
   );
