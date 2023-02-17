@@ -6,6 +6,7 @@ import {
   Group,
   Grid,
   Anchor,
+  Center,
 } from "@mantine/core";
 import {
   IconBrandTwitter,
@@ -102,7 +103,7 @@ const useStyles = createStyles((theme) => ({
   },
   afterFooter: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     marginTop: theme.spacing.xl,
     paddingTop: theme.spacing.xl,
@@ -210,7 +211,13 @@ export function FooterLinks({ links }: FooterLinksProps) {
           </Grid.Col>
         </Grid>
       </Container>
-      <Container size="lg" className={classes.afterFooter}></Container>
+      <Container size="lg" className={classes.afterFooter}>
+        <Center>
+          <Text color="dimmed" align="center" size="sm">
+            © 2023 Darsi.pk All rights reserved.
+          </Text>
+        </Center>
+      </Container>
     </footer>
   );
 }
