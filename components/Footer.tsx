@@ -13,6 +13,7 @@ import {
   IconBrandYoutube,
   IconBrandInstagram,
   IconBrandFacebook,
+  IconBrandWhatsapp,
 } from "@tabler/icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,7 +60,7 @@ const useStyles = createStyles((theme) => ({
     },
   },
   link: {
-    display: "block",
+    display: "flex",
     color:
       theme.colorScheme === "dark"
         ? theme.colors.dark[1]
@@ -205,8 +206,7 @@ export function FooterLinks({ links }: FooterLinksProps) {
             <a className={classes.link}>Sales : sale@darsi.pk</a>
             <a className={classes.link}>Support: support@darsi.pk</a>
             <a className={classes.link}>Query: info@darsi.pk</a>
-            <a className={classes.link}>
-              Whatapp: <br /> +92 300 0206761
+            <a className={classes.link}><IconBrandWhatsapp size={20} stroke={2} style={{display: "inlineFlex"}}/> &nbsp;  +92 300 0206761
             </a>
           </Grid.Col>
         </Grid>
