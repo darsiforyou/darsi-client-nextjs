@@ -92,7 +92,7 @@ const cartSlice = createSlice({
       let vendorTotal = Number(state.vendorTotal);
       let profit = total - vendorTotal;
       let discount_percentage = Number(action.payload?.discount_percentage | 0);
-      let netAmount = (profit * discount_percentage) / 100;
+      let netAmount = (total * discount_percentage) / 100;
       
       state.code = action.payload.code;
       state.discount = netAmount

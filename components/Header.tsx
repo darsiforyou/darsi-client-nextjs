@@ -249,9 +249,10 @@ const useStyles: any = createStyles((theme) => ({
     },
   },
   upperLink: {
-    fontSize: 12,
+    fontSize: 16,
     marginLeft: 20,
     cursor: "pointer",
+    color:"#FF8000"
   },
 }));
 
@@ -324,6 +325,7 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
             href="https://dashboard.darsi.pk/vendor/signup"
             target="_blank"
             rel="noreferrer"
+            color="#FF8000"
           >
             Become a Vendor
           </a>
