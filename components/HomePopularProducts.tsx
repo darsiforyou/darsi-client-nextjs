@@ -61,8 +61,8 @@ function HomePopularProducts() {
             <Loader />
           </Center>
         ) : (
-          products?.data.map((product: any) => (
-            <ProductCard key={product._id} product={product} />
+          products?.data.map((product: any, index: number) => (
+            <ProductCard key={index} product={product} />
           ))
         )}
       </SimpleGrid>
