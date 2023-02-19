@@ -39,10 +39,12 @@ const cartSlice = createSlice({
       if (!isProduct) {
         state.products.push(action.payload);
       }
+
       state.products.map((item: any, key: any) => {
         if (item._id === action.payload._id) {
           state.products[key].quantity = Number(action.payload.quantity);
         }
+
         quantity += state.products[key].quantity;
         total += state.products[key].price * state.products[key].quantity;
         vendorTotal +=
@@ -51,6 +53,10 @@ const cartSlice = createSlice({
       state.quantity = quantity;
       state.total = total;
       state.vendorTotal = vendorTotal;
+      if (state.code.length > 0) {
+        apply_ref_code(state);
+        console.log("yes");
+      }
     },
     removeProduct: (state: any, action: any) => {
       if (action.payload.quantity > 1) {
@@ -93,11 +99,12 @@ const cartSlice = createSlice({
       state.discount = 0;
     },
     apply_ref_code: (state, action) => {
+      console.log(state);
       let total = Number(state.total);
       let vendorTotal = Number(state.vendorTotal);
       let profit = total - vendorTotal;
       let discount_percentage = Number(action.payload?.discount_percentage | 0);
-      let netAmount = (total * discount_percentage) / 100;
+      let netAmount = (profit * discount_percentage) / 100;
 
       state.code = action.payload.code;
       state.discount = netAmount;
