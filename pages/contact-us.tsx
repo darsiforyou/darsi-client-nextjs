@@ -11,7 +11,7 @@ import {
   Container,
 } from "@mantine/core";
 import {
-  IconBrandTwitter,
+  IconBrandFacebook,
   IconBrandYoutube,
   IconBrandInstagram,
 } from "@tabler/icons";
@@ -37,7 +37,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   description: {
-    color: "#f85606",
+    color: "white",
     maxWidth: 300,
 
     [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
@@ -56,7 +56,7 @@ const useStyles = createStyles((theme) => ({
     color: theme.white,
 
     "&:hover": {
-      color: "#f85606",
+      color: "#4d539f",
     },
   },
 
@@ -79,7 +79,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const social = [IconBrandTwitter, IconBrandYoutube, IconBrandInstagram];
+const social = [IconBrandFacebook, IconBrandYoutube, IconBrandInstagram];
 
 export default function ContactUs() {
   const { classes } = useStyles();
@@ -122,7 +122,7 @@ export default function ContactUs() {
             />
             <TextInput
               label="Name"
-              placeholder="John Doe"
+              placeholder="Fazian Dilshad"
               mt="md"
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
