@@ -225,12 +225,8 @@ const useStyles: any = createStyles((theme) => ({
 
   linkActive: {
     "&, &:hover": {
-      backgroundColor: theme.fn.variant({
-        variant: "light",
-        color: theme.primaryColor,
-      }).background,
-      color: theme.fn.variant({ variant: "light", color: theme.primaryColor })
-        .color,
+      backgroundColor: "rgba(248, 86, 6, .09)",
+      color: "rgba(248, 86, 6, 1)",
     },
   },
   search: {
@@ -249,10 +245,10 @@ const useStyles: any = createStyles((theme) => ({
     },
   },
   upperLink: {
-    fontSize: 16,
+    fontSize: 12,
     marginLeft: 20,
     cursor: "pointer",
-    color:"#f85606"
+    color: "#f85606",
   },
 }));
 

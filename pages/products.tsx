@@ -73,8 +73,11 @@ export default function Search() {
     set_Categories(cats);
   }, [categories]);
   useEffect(() => {
+    if (query) {
+      setFilters((prev) => ({ ...prev, category }));
+    }
     refetch();
-  }, [activePage, sort, category]);
+  }, [activePage, sort, category, query]);
 
   return (
     <>
