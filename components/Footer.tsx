@@ -14,11 +14,15 @@ import {
   IconBrandInstagram,
   IconBrandFacebook,
   IconBrandWhatsapp,
+  
 } from "@tabler/icons";
+
+import { MdOutlineMail } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -108,7 +112,7 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     marginTop: theme.spacing.xl,
     paddingTop: theme.spacing.xl,
-    paddingBottom: theme.spacing.sm,
+    // paddingBottom: theme.spacing.sm,
     borderTop: `1px solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2]
     }`,
@@ -175,7 +179,10 @@ export function FooterLinks({ links }: FooterLinksProps) {
               <ActionIcon size="xl">
                 <IconBrandYoutube size={18} stroke={1.5} />
               </ActionIcon>
-              <ActionIcon size="xl">
+              <ActionIcon size="xl"
+              component="a"
+              href="https://www.instagram.com/darsi.pk/?igshid=ZDdkNTZiNTM%3D"
+              >
                 <IconBrandInstagram size={18} stroke={1.5} />
               </ActionIcon>
             </Group>
@@ -187,6 +194,7 @@ export function FooterLinks({ links }: FooterLinksProps) {
                 {link.label}
               </Link>
             ))}
+            {/* <NavLink to="/privatePolicy" > Privacy Policy</NavLink> */}
           </Grid.Col>
           <Grid.Col md={4} xs={24} className={classes.links}>
             <Text className={classes.title}>Categories</Text>
@@ -205,7 +213,7 @@ export function FooterLinks({ links }: FooterLinksProps) {
             ))} */}
             <a className={classes.link}>Sales : sale@darsi.pk</a>
             <a className={classes.link}>Support: support@darsi.pk</a>
-            <a className={classes.link}>Query: info@darsi.pk</a>
+            <a className={classes.link}><MdOutlineMail size={20} stroke={2} style={{display: "inlineFlex"}}/> &nbsp;info@darsi.pk</a>
             <a className={classes.link}><IconBrandWhatsapp size={20} stroke={2} style={{display: "inlineFlex"}}/> &nbsp;  +92 300 0206761
             </a>
           </Grid.Col>
@@ -213,8 +221,9 @@ export function FooterLinks({ links }: FooterLinksProps) {
       </Container>
       <Container size="lg" className={classes.afterFooter}>
         <Center>
-          <Text color="dimmed" align="center" size="sm">
+          <Text color="#4d539f" align="center" size="md" weight="bold">
             © 2023 Darsi.pk All rights reserved.
+            
           </Text>
         </Center>
       </Container>
