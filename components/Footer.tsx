@@ -14,15 +14,14 @@ import {
   IconBrandInstagram,
   IconBrandFacebook,
   IconBrandWhatsapp,
-  
+  IconMail,
 } from "@tabler/icons";
 
-import { MdOutlineMail } from "react-icons/md";
+// import { MdOutlineMail } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -179,9 +178,10 @@ export function FooterLinks({ links }: FooterLinksProps) {
               <ActionIcon size="xl">
                 <IconBrandYoutube size={18} stroke={1.5} />
               </ActionIcon>
-              <ActionIcon size="xl"
-              component="a"
-              href="https://www.instagram.com/darsi.pk/?igshid=ZDdkNTZiNTM%3D"
+              <ActionIcon
+                size="xl"
+                component="a"
+                href="https://www.instagram.com/darsi.pk/?igshid=ZDdkNTZiNTM%3D"
               >
                 <IconBrandInstagram size={18} stroke={1.5} />
               </ActionIcon>
@@ -213,8 +213,21 @@ export function FooterLinks({ links }: FooterLinksProps) {
             ))} */}
             <a className={classes.link}>Sales : sale@darsi.pk</a>
             <a className={classes.link}>Support: support@darsi.pk</a>
-            <a className={classes.link}><MdOutlineMail size={20} stroke={2} style={{display: "inlineFlex"}}/> &nbsp;info@darsi.pk</a>
-            <a className={classes.link}><IconBrandWhatsapp size={20} stroke={2} style={{display: "inlineFlex"}}/> &nbsp;  +92 300 0206761
+            <a className={classes.link}>
+              <IconMail
+                size={20}
+                stroke={2}
+                style={{ display: "inlineFlex" }}
+              />{" "}
+              &nbsp;info@darsi.pk
+            </a>
+            <a className={classes.link}>
+              <IconBrandWhatsapp
+                size={20}
+                stroke={2}
+                style={{ display: "inlineFlex" }}
+              />{" "}
+              &nbsp; +92 300 0206761
             </a>
           </Grid.Col>
         </Grid>
@@ -223,7 +236,6 @@ export function FooterLinks({ links }: FooterLinksProps) {
         <Center>
           <Text color="#4d539f" align="center" size="md" weight="bold">
             © 2023 Darsi.pk All rights reserved.
-            
           </Text>
         </Center>
       </Container>
