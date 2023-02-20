@@ -17,6 +17,10 @@ export default class _Document extends Document {
             name="viewport"
             content="initial-scale=1.0, width=device-width"
           />
+          <meta
+            name="google-site-verification"
+            content="6-NJX3RNX2DEWp0OUj_fiCFU1z0bxcGnn5SzLVMVFvQ"
+          />
           <Script id="tawk" strategy="lazyOnload">
             {`
                 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
