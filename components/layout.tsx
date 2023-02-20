@@ -70,6 +70,8 @@ function Layout({ children }: any) {
           { label: "Home", link: "/" },
           { label: "Products", link: "/products" },
           { label: "Packages", link: "/packages" },
+          { label: "Contact us", link: "/contact-us" },
+          { label: "Terms and conditions", link: "/terms" },
         ]}
       />
     </>

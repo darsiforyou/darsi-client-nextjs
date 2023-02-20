@@ -39,10 +39,11 @@ const useStyles = createStyles((theme) => ({
       left: 0,
       right: 0,
       bottom: 0,
-      borderBottom: `1px solid ${theme.colorScheme === "dark"
+      borderBottom: `1px solid ${
+        theme.colorScheme === "dark"
           ? theme.colors.dark[3]
           : theme.colors.gray[2]
-        }`,
+      }`,
     },
   },
 
@@ -161,12 +162,14 @@ function Cart() {
         <Grid columns={3}>
           <Grid.Col xs={3} sm={3} md={2} lg={2}>
             <ScrollArea
-              sx={{ height: 300 }}
+              sx={{ height: 600 }}
               onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
             >
               <Table sx={{ minWidth: "100%" }}>
                 <thead
-                  className={cx(classes.header, { [classes.scrolled]: scrolled })}
+                  className={cx(classes.header, {
+                    [classes.scrolled]: scrolled,
+                  })}
                 >
                   <tr>
                     <th>Image</th>
