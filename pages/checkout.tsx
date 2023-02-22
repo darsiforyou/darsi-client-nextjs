@@ -80,6 +80,7 @@ function Cart() {
   const { classes: classesDiscountInput } = useStylesDiscountInput();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cartData, setCartData] = useState(false);
+  const [shippingAmount, setShippingAmount] = useState(0);
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("COD");
@@ -89,21 +90,39 @@ function Cart() {
   const [code, setCode] = useState("");
   const [_package, setPackage]: any = useState({});
   const dispatch = useDispatch();
-  const bankSurCharges = Number((cart.total - cart.discount)*2.75/100);
-  const taxPaypro = Number (bankSurCharges*13/100);
-  const totalTax = Number (bankSurCharges + taxPaypro );
-  const paybale = Number(cart.total - cart.discount + totalTax)
+  console.log(cart.total, cart.discount);
+  const bankSurCharges =
+    ((cart.total + shippingAmount - cart.discount) * 2.75) / 100;
+  const taxPaypro = Number((bankSurCharges * 13) / 100);
+  const totalTax = Math.round(Number(bankSurCharges + taxPaypro));
+  const paybale = Math.round(
+    Number(cart.total + shippingAmount - cart.discount + totalTax)
+  );
+  console.log(bankSurCharges, taxPaypro, totalTax, paybale);
   const calculateDiscount = (): number => {
+    // if(cart.discount){
+    //   return cart.discount
+    // }
     let total = Number(cart.total);
     let vendorTotal = Number(cart.vendorTotal);
     let profit = total - vendorTotal;
     let discount_percentage = Number(_package?.discount_percentage | 0);
     let netAmount = (profit * discount_percentage) / 100;
+    if (cart.discount) {
+      netAmount = cart.discount;
+    }
     return netAmount;
   };
   useEffect(() => {
     window.scrollTo(0, 0);
+    calculateDiscount();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    calculateDiscount();
+  }, [cart]);
+
   const form = useForm({
     validateInputOnChange: true,
     initialValues: {
@@ -151,6 +170,17 @@ function Cart() {
       return data;
     },
   });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (shipping) {
+      if (form.values.city === "Karachi") {
+        setShippingAmount(shipping.inCity);
+      } else {
+        setShippingAmount(shipping.outCity);
+      }
+    }
+    calculateDiscount();
+  }, [form.values.city, shipping]);
   const [loadingCheckout, setloadingCheckout] = useState(false);
   const handleConfirmCart = () => {
     setloadingCheckout(true);
@@ -215,7 +245,7 @@ function Cart() {
     cartData.postalCode = values.postalCode;
     cartData.phone = values.phone;
     cartData.paymentMethod = paymentMethod;
-    
+
     cartData.shippingCharges =
       form.values.city === "Karachi" ? shipping?.inCity : shipping?.outCity;
     setCartData(cartData);
@@ -322,7 +352,7 @@ function Cart() {
                       </tr>
                       <tr>
                         <td>Discount:</td>
-                        <td>Rs.{cart.discount}</td>
+                        <td>Rs.{calculateDiscount()}</td>
                       </tr>
                       <tr>
                         <td>Total:</td>
@@ -331,19 +361,28 @@ function Cart() {
                           {(form.values.city === "Karachi"
                             ? shipping?.inCity
                             : shipping?.outCity) +
-                            (cart.total - cart.discount)}
+                            (cart.total - calculateDiscount())}
                         </td>
                       </tr>
-                      <tr>
-                      <td>Bank Charges</td>
-                      {/* 2.75% charges hai paypro or 13% hai Fedreal sindh tex on apllicable of 2.75% value */}
-                      <td>{(totalTax.toFixed(2))}</td>
-                    </tr>
-                    <tr>
-                    <td>Payable</td>
-                      
-                      <td>{paybale.toFixed(2)}</td>
-                    </tr>
+                      {paymentMethod === "PAYPRO" && (
+                        <>
+                          <tr>
+                            <td>Bank Charges</td>
+                            {/* 2.75% charges hai paypro or 13% hai Fedreal sindh tex on apllicable of 2.75% value */}
+                            <td>{totalTax}</td>
+                          </tr>
+                          <tr>
+                            <td>FBR Charges</td>
+                            {/* 2.75% charges hai paypro or 13% hai Fedreal sindh tex on apllicable of 2.75% value */}
+                            <td>1</td>
+                          </tr>
+                          <tr>
+                            <td>Payable</td>
+
+                            <td>{paybale + 1}</td>
+                          </tr>
+                        </>
+                      )}
                     </tbody>
                   </Table>
                 </ScrollArea>
@@ -377,7 +416,7 @@ function Cart() {
                       value={code}
                       onChange={(e) => setCode(e.target.value)}
                     />
-                    
+
                     <Button
                       disabled={
                         !code || (cart.discount && cart.products.length >= 0)

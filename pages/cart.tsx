@@ -83,7 +83,7 @@ function Cart() {
   const [code, setCode] = useState("");
   const [_package, setPackage]: any = useState({});
   const dispatch = useDispatch();
-  
+
   const calculateDiscount = (): number => {
     let total = Number(cart.total);
     let vendorTotal = Number(cart.vendorTotal);
@@ -92,7 +92,6 @@ function Cart() {
     let netAmount = (profit * discount_percentage) / 100;
     return netAmount;
   };
-  
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -217,11 +216,10 @@ function Cart() {
                       <td>Total:</td>
                       <td>Rs.{cart.total - calculateDiscount()}</td>
                     </tr>
-                   
                   </tbody>
                 </Table>
               </ScrollArea>
-              <TextInput
+              {/* <TextInput
                 disabled={
                   cart.products.length === 0 ||
                   (cart.discount && cart.products.length >= 0)
@@ -231,8 +229,8 @@ function Cart() {
                 classNames={classesDiscountInput}
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-              />
-              <Button
+              /> */}
+              {/* <Button
                 disabled={!code || (cart.discount && cart.products.length >= 0)}
                 variant="light"
                 sx={{ marginTop: 10, width: "100%" }}
@@ -257,7 +255,7 @@ function Cart() {
                 }
               >
                 Apply Code
-              </Button>
+              </Button> */}
               <Button
                 disabled={cart.products.length === 0}
                 sx={{
