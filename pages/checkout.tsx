@@ -89,6 +89,10 @@ function Cart() {
   const [code, setCode] = useState("");
   const [_package, setPackage]: any = useState({});
   const dispatch = useDispatch();
+  const bankSurCharges = Number((cart.total - cart.discount)*2.75/100);
+  const taxPaypro = Number (bankSurCharges*13/100);
+  const totalTax = Number (bankSurCharges + taxPaypro );
+  const paybale = Number(cart.total - cart.discount + totalTax)
   const calculateDiscount = (): number => {
     let total = Number(cart.total);
     let vendorTotal = Number(cart.vendorTotal);
@@ -211,6 +215,7 @@ function Cart() {
     cartData.postalCode = values.postalCode;
     cartData.phone = values.phone;
     cartData.paymentMethod = paymentMethod;
+    
     cartData.shippingCharges =
       form.values.city === "Karachi" ? shipping?.inCity : shipping?.outCity;
     setCartData(cartData);
@@ -329,6 +334,16 @@ function Cart() {
                             (cart.total - cart.discount)}
                         </td>
                       </tr>
+                      <tr>
+                      <td>Bank Charges</td>
+                      {/* 2.75% charges hai paypro or 13% hai Fedreal sindh tex on apllicable of 2.75% value */}
+                      <td>{(totalTax.toFixed(2))}</td>
+                    </tr>
+                    <tr>
+                    <td>Payable</td>
+                      
+                      <td>{paybale.toFixed(2)}</td>
+                    </tr>
                     </tbody>
                   </Table>
                 </ScrollArea>
@@ -362,6 +377,7 @@ function Cart() {
                       value={code}
                       onChange={(e) => setCode(e.target.value)}
                     />
+                    
                     <Button
                       disabled={
                         !code || (cart.discount && cart.products.length >= 0)

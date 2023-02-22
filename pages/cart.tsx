@@ -83,6 +83,7 @@ function Cart() {
   const [code, setCode] = useState("");
   const [_package, setPackage]: any = useState({});
   const dispatch = useDispatch();
+  
   const calculateDiscount = (): number => {
     let total = Number(cart.total);
     let vendorTotal = Number(cart.vendorTotal);
@@ -91,6 +92,7 @@ function Cart() {
     let netAmount = (profit * discount_percentage) / 100;
     return netAmount;
   };
+  
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -209,12 +211,13 @@ function Cart() {
                     </tr>
                     <tr>
                       <td>Discount:</td>
-                      <td>Rs.{cart.discount}</td>
+                      <td>Rs.{calculateDiscount()}</td>
                     </tr>
                     <tr>
                       <td>Total:</td>
-                      <td>Rs.{cart.total - cart.discount}</td>
+                      <td>Rs.{cart.total - calculateDiscount()}</td>
                     </tr>
+                   
                   </tbody>
                 </Table>
               </ScrollArea>
