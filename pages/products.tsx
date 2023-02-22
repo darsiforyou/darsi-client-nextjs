@@ -40,6 +40,7 @@ export default function Search() {
       return brands;
     },
   });
+  
   const [filters, setFilters] = useState({
     page: activePage,
     sort: sort,
