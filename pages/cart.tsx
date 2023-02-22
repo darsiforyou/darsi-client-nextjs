@@ -21,6 +21,7 @@ import {
   addProduct,
   addProductToCart,
   clearProductFromCart,
+  updateDiscount,
   clear_cart,
 } from "../redux/reducers/cartRedux";
 import { showNotification } from "@mantine/notifications";
@@ -83,7 +84,7 @@ function Cart() {
   const [code, setCode] = useState("");
   const [_package, setPackage]: any = useState({});
   const dispatch = useDispatch();
-  const calculateDiscount = (): number => {
+  const calculateDiscount = (): Number => {
     let total = Number(cart.total);
     let vendorTotal = Number(cart.vendorTotal);
     let profit = total - vendorTotal;
@@ -141,6 +142,10 @@ function Cart() {
       </tr>
     );
   });
+  // useEffect(() => {
+  //   const discount = calculateDiscount();
+  //   dispatch(updateDiscount({ discount }));
+  // }, [cart.]);
   return (
     <>
       <Head>
@@ -213,7 +218,10 @@ function Cart() {
                     </tr>
                     <tr>
                       <td>Total:</td>
-                      <td>Rs.{cart.total - cart.discount}</td>
+                      <td>
+                        Rs.
+                        {cart.total - cart.discount}
+                      </td>
                     </tr>
                   </tbody>
                 </Table>

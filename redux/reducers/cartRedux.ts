@@ -109,6 +109,10 @@ const cartSlice = createSlice({
       state.code = action.payload.code;
       state.discount = netAmount;
     },
+    updateDiscount: (state, action: any) => {
+      console.log(action.payload);
+      state.discount += action.payload.discount;
+    },
   },
 });
 
@@ -119,5 +123,6 @@ export const {
   apply_ref_code,
   clearProductFromCart,
   addProductToCart,
+  updateDiscount,
 } = cartSlice.actions;
 export default cartSlice.reducer;
