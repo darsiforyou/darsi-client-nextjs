@@ -1,4 +1,5 @@
 import {
+  Accordion,
   Box,
   Container,
   Grid,
@@ -40,6 +41,7 @@ export default function Search() {
       return brands;
     },
   });
+
   const [filters, setFilters] = useState({
     page: activePage,
     sort: sort,
@@ -97,58 +99,96 @@ export default function Search() {
         {!isFetching ? (
           <>
             <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: 10,
-              }}
+            // sx={{
+            //   display: "flex",
+            //   justifyContent: "space-between",
+            //   marginBottom: 10,
+            // }}
             >
-              <Text size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
-                All Products
-              </Text>
-              <Box sx={{ display: "flex", gap: 10 }}>
-                <Select
-                  label="Age"
-                  data={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
-                  placeholder="Select age"
-                  value={filters.targetAge}
-                  clearable
-                  onChange={(e: any) => {
-                    setFilters((prev) => ({ ...prev, page: 1, targetAge: e }));
-                  }}
-                />
-                <Select
-                  label="Category"
-                  data={_categories}
-                  placeholder="Select a category"
-                  value={filters.category}
-                  onChange={(e: any) => {
-                    setFilters((prev) => ({ ...prev, page: 1, category: e }));
-                  }}
-                />
-                <Select
-                  label="Sort By"
-                  data={[
-                    { label: "Recent", value: "RECENT" },
-                    { label: "Price High to low", value: "PRICE_HIGH_TO_LOW" },
-                    { label: "Price low to High", value: "PRICE_LOW_TO_HIGH" },
-                  ]}
-                  value={filters.sort}
-                  onChange={(e: any) => {
-                    setFilters((prev) => ({ ...prev, page: 1, sort: e }));
-                  }}
-                />
-                <Select
-                  label="Brands"
-                  data={[{ label: "All", value: "" }, ...brands]}
-                  value={filters.brand}
-                  placeholder="Select Brand"
-                  clearable
-                  onChange={(e: any) => {
-                    setFilters((prev) => ({ ...prev, page: 1, brand: e }));
-                  }}
-                />
-              </Box>
+              <Text size="xl">All Products</Text>
+              <Accordion defaultValue="Filters">
+                <Accordion.Item value="Filters">
+                  <Accordion.Control>Filters</Accordion.Control>
+                  <Accordion.Panel>
+                    <SimpleGrid
+                      cols={4}
+                      mb="lg"
+                      breakpoints={[{ maxWidth: 700, cols: 2 }]}
+                    >
+                      <Select
+                        label="Age"
+                        data={[
+                          "1",
+                          "2",
+                          "3",
+                          "4",
+                          "5",
+                          "6",
+                          "7",
+                          "8",
+                          "9",
+                          "10",
+                        ]}
+                        placeholder="Select age"
+                        value={filters.targetAge}
+                        clearable
+                        onChange={(e: any) => {
+                          setFilters((prev) => ({
+                            ...prev,
+                            page: 1,
+                            targetAge: e,
+                          }));
+                        }}
+                      />
+                      <Select
+                        label="Category"
+                        data={_categories}
+                        placeholder="Select a category"
+                        value={filters.category}
+                        onChange={(e: any) => {
+                          setFilters((prev) => ({
+                            ...prev,
+                            page: 1,
+                            category: e,
+                          }));
+                        }}
+                      />
+                      <Select
+                        label="Sort By"
+                        data={[
+                          { label: "Recent", value: "RECENT" },
+                          {
+                            label: "Price High to low",
+                            value: "PRICE_HIGH_TO_LOW",
+                          },
+                          {
+                            label: "Price low to High",
+                            value: "PRICE_LOW_TO_HIGH",
+                          },
+                        ]}
+                        value={filters.sort}
+                        onChange={(e: any) => {
+                          setFilters((prev) => ({ ...prev, page: 1, sort: e }));
+                        }}
+                      />
+                      <Select
+                        label="Brands"
+                        data={[{ label: "All", value: "" }, ...brands]}
+                        value={filters.brand}
+                        placeholder="Select Brand"
+                        clearable
+                        onChange={(e: any) => {
+                          setFilters((prev) => ({
+                            ...prev,
+                            page: 1,
+                            brand: e,
+                          }));
+                        }}
+                      />
+                    </SimpleGrid>
+                  </Accordion.Panel>
+                </Accordion.Item>
+              </Accordion>
             </Box>
             <Grid columns={3}>
               <Grid.Col xs={3} sm={3} md={3} lg={3}>
