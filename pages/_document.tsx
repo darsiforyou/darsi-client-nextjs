@@ -21,6 +21,11 @@ export default class _Document extends Document {
             name="google-site-verification"
             content="6-NJX3RNX2DEWp0OUj_fiCFU1z0bxcGnn5SzLVMVFvQ"
           />
+          <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8374791263444786"
+            crossOrigin="anonymous"
+          ></Script>
           <Script id="tawk" strategy="lazyOnload">
             {`
                 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
