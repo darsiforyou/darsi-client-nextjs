@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/server": "^11.10.0",
+    "@formspree/react": "^2.4.1",
     "@mantine/core": "^5.6.0",
     "@mantine/form": "^5.6.0",
     "@mantine/hooks": "^5.6.0",

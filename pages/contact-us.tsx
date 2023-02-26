@@ -16,6 +16,7 @@ import {
   IconBrandInstagram,
 } from "@tabler/icons";
 import { ContactIconsList } from "../components/ContactIcons";
+//  import { useForm, ValidationError } from "@formspree/react";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -81,9 +82,14 @@ const useStyles = createStyles((theme) => ({
 
 const social = [IconBrandFacebook, IconBrandYoutube, IconBrandInstagram];
 
+
 export default function ContactUs() {
   const { classes } = useStyles();
-
+  // const [state, handleSubmit] = useForm("https://formspree.io/f/xoqzdrwr");
+  // if (state.succeeded) {
+  //     return <p>Thanks for joining!</p>;
+  // }
+  
   const icons = social.map((Icon, index) => (
     <ActionIcon
       key={index}
@@ -94,8 +100,10 @@ export default function ContactUs() {
       <Icon size={22} stroke={1.5} />
     </ActionIcon>
   ));
+  
 
   return (
+    <form action="https://formspree.io/f/xoqzdrwr" method="POST">
     <Container mt={60}>
       <div className={classes.wrapper}>
         <SimpleGrid
@@ -117,30 +125,39 @@ export default function ContactUs() {
             <TextInput
               label="Email"
               placeholder="your@email.com"
+              name ="email"
               required
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
+            {/* <ValidationError prefix="email" field="email" errors={state.errors} /> */}
             <TextInput
               label="Name"
               placeholder="Fazian Dilshad"
+              name="name"
               mt="md"
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
+            {/* <ValidationError prefix="name" field="name" errors={state.errors} /> */}
             <Textarea
               required
               label="Your message"
+              name="your-message"
               placeholder="I want to order your goods"
               minRows={4}
               mt="md"
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
+            {/* <ValidationError prefix="your-message" field="your-message" errors={state.errors} /> */}
 
             <Group position="right" mt="md">
-              <Button className={classes.control}>Send message</Button>
+            <Button className={classes.control} type="submit">Send message</Button>
+              {/* <Button className={classes.control} disabled={state.submitting} type="submit">Send message</Button>
+              <ValidationError errors={state.errors} /> */}
             </Group>
           </div>
         </SimpleGrid>
       </div>
     </Container>
+    </form>
   );
 }
