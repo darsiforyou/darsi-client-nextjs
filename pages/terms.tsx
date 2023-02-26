@@ -60,7 +60,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function EmailBanner() {
   const { classes } = useStyles();
-  const { data: shipping } = useQuery({
+  const { data: shipping, isLoading } = useQuery({
     queryKey: ["shipping"],
     queryFn: async () => {
       const res = await publicRequest("/shippings");
@@ -176,10 +176,11 @@ export default function EmailBanner() {
           <h1>Delivery Charges</h1>
         </Text>
         <Text size="lg" color="dimmed">
-          For Karachi only deliery charges are only {shipping.inCity} PKR and
-          Nationwide (Pakistan) delivery charges are only {shipping.outCity} PKR
-          for a max weight of 1.99 kg. Extra delivery charges will charge in
-          case the weight is 2KG or more than 2KG.
+          For Karachi only deliery charges are only{" "}
+          {!isLoading && shipping?.inCity} PKR and Nationwide (Pakistan)
+          delivery charges are only {!isLoading && shipping?.outCity} PKR for a
+          max weight of 1.99 kg. Extra delivery charges will charge in case the
+          weight is 2KG or more than 2KG.
         </Text>
         <Text weight={500} size="lg" mb={5} color="#f85606">
           <h1>REVISION TO TERMS AND CONDITIONS</h1>
