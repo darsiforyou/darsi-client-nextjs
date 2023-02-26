@@ -175,6 +175,7 @@ const useStyles: any = createStyles((theme) => ({
     [theme.fn.smallerThan("sm")]: {
       width: "60px",
     },
+   
   },
   links: {
     flex: 1,
@@ -231,6 +232,7 @@ const useStyles: any = createStyles((theme) => ({
   },
   search: {
     flex: 1,
+    marginLeft:"2%",
     ".mantine-Input-icon": {
       right: "0px !important",
       left: "auto !important",

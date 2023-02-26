@@ -91,7 +91,7 @@ interface ContactIconsListProps {
 const MOCKDATA = [
   { title: "Email", description: "info@darsi.pk", icon: IconAt },
   { title: "Phone", description: "+92 300 0206761", icon: IconPhone },
-  { title: "Address", description: "Block 18 F.B Area, Karachi, Pakistan", icon: IconMapPin },
+  { title: "Address", description: "Block 17 F.B Area, Karachi, Pakistan", icon: IconMapPin },
   { title: "Working hours", description: "9:00 a.m. – 18:00 p.m.", icon: IconSun },
 ];
 

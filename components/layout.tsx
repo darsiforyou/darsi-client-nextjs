@@ -71,7 +71,10 @@ function Layout({ children }: any) {
           { label: "Products", link: "/products" },
           { label: "Packages", link: "/packages" },
           { label: "Contact us", link: "/contact-us" },
+          { label: "Privacy Policy", link: "/privacyPolicy" },
+          { label: "Refund Policy", link: "/refundPolicy" },
           { label: "Terms and conditions", link: "/terms" },
+          
         ]}
       />
     </>
