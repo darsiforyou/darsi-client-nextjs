@@ -213,13 +213,14 @@ function Cart() {
                       <td>Sub Total:</td>
                       <td>Rs.{cart.total}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td>Discount:</td>
                       <td>Rs.{calculateDiscount()}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td>Total:</td>
-                      <td>Rs.{cart.total - calculateDiscount()}</td>
+                      {/* <td>Rs.{cart.total - calculateDiscount()}</td> */}
+                      <td>Rs.{cart.total}</td>
                     </tr>
                   </tbody>
                 </Table>
