@@ -15,7 +15,7 @@ a{
 }
 .btnDisable{
     pointer-events: none !important;
-    background-color: rgb(223, 125, 125);
+    background-color: rgb(223, 125, 125) !important;
 }
 /* // Osama Css */
  @media (max-width : 991px){
