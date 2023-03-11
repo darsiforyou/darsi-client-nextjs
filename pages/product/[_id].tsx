@@ -93,10 +93,16 @@ function ProductDetail() {
   const cart = useSelector((state: any) => state.cart);
   const [qty, setQty] = useState(1);
   const { _id } = router.query;
+  const [Disabled, setDisabled]: any = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  useEffect(()=>{
+    if(product.stockCountPending == 0){
+      setDisabled(true)
+    }
+  }, [product]);
   const fetchProductDetails = async () => {
     await get_product(_id).then(async ({ data }: any) => {
       setProduct(data);
@@ -343,6 +349,7 @@ function ProductDetail() {
               ))}
             </Box>
             <Button
+           className={Disabled && "btnDisable"}
               sx={{
                 marginTop: 10,
                 backgroundColor: "#f85606",
@@ -352,6 +359,7 @@ function ProductDetail() {
                 },
               }}
               onClick={() => {
+                console.log(product,"productss")
                 if (product.stockCountPending > 0) {
                   let isOptionEmpty = false;
                   product.options.forEach((op: any) => {
@@ -376,11 +384,18 @@ function ProductDetail() {
                     message: "Out of Stock",
                     color: "red",
                   });
-                }
+                }             
               }}
+              
             >
               Add to Cart
             </Button>
+            {Disabled && 
+            <div>
+             <h3 className="OutProductText">Currently Unavailable*</h3>
+              <p>we dont know when or if this item will be back in stock</p>
+            </div>}
+
             <Spoiler
               maxHeight={120}
               showLabel="Show more"

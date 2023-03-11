@@ -9,6 +9,14 @@ a{
     text-decoration: none;
     color: black;
 }
+.OutProductText{
+    color: red;
+    font-weight: bold;
+}
+.btnDisable{
+    pointer-events: none !important;
+    background-color: rgb(223, 125, 125);
+}
 /* // Osama Css */
  @media (max-width : 991px){
     body header.mantine-Header-root {
