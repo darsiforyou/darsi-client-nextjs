@@ -52,6 +52,8 @@ const useStyles = createStyles((theme) => ({
 
 export function ProductCard({ product }: any) {
   const { classes }: any = useStyles();
+  const [Disabled, setDisabled]: any = useState(false);
+
   const dispatch = useDispatch();
   const rendertag = () => {
     let tags = (product.tags || "").replace(/\s/g, "").split(",");
@@ -71,6 +73,13 @@ export function ProductCard({ product }: any) {
     let frontImage = (product.media || []).find((x: any) => x.isFront === true);
     return frontImage && frontImage?.imageURL;
   };
+
+ 
+  useEffect(() => {
+    if (product.stockCountPending == 0) {
+      setDisabled(true);
+    }
+  }, [product]); 
 
   return (
     <Link href={`/product/${product._id}`}>
@@ -128,6 +137,12 @@ export function ProductCard({ product }: any) {
                 product.title.length > 30 ? "..." : ""
               }`}
             </Text>
+            {Disabled && (
+              <div>
+                <h5 className="OutProductText">Out Of Stock*</h5>
+              </div>
+            )}
+
             <Text size="md" sx={{ lineHeight: 1, color: "#f85606" }}>
               Rs.{product.price}
             </Text>
