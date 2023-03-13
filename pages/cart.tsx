@@ -219,7 +219,8 @@ function Cart() {
                     </tr> */}
                     <tr>
                       <td>Total:</td>
-                      <td>Rs.{cart.total - calculateDiscount()}</td>
+                      {/* <td>Rs.{cart.total - calculateDiscount()}</td> */}
+                      <td>Rs.{cart.total}</td>
                     </tr>
                   </tbody>
                 </Table>

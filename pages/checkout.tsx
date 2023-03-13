@@ -331,7 +331,7 @@ function Cart() {
                   <Table sx={{ minWidth: "100%" }}>
                     <thead>
                       <tr>
-                        <th colSpan={2}>Cart Detail</th>
+                        <th colSpan={2}>Order Summary</th>
                       </tr>
                     </thead>
                     <tbody>
