@@ -55,7 +55,6 @@ const cartSlice = createSlice({
       state.vendorTotal = vendorTotal;
       if (state.code.length > 0) {
         apply_ref_code(state);
-        console.log("yes");
       }
     },
     removeProduct: (state: any, action: any) => {
@@ -99,7 +98,6 @@ const cartSlice = createSlice({
       state.discount = 0;
     },
     apply_ref_code: (state, action) => {
-      console.log(state);
       let total = Number(state.total);
       let vendorTotal = Number(state.vendorTotal);
       let profit = total - vendorTotal;
@@ -110,7 +108,6 @@ const cartSlice = createSlice({
       state.discount = netAmount;
     },
     updateDiscount: (state, action: any) => {
-      console.log(action.payload);
       state.discount += action.payload.discount;
     },
   },

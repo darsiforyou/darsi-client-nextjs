@@ -33,7 +33,6 @@ export default function Search() {
     queryFn: async () => {
       const res = await publicRequest.get(`/brands?limit=1000`);
       const data = res.data.data.docs;
-      console.log(data);
       const brands = data.map((brand: any) => ({
         value: brand._id,
         label: brand.title,

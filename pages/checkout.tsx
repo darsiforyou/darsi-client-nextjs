@@ -90,7 +90,6 @@ function Cart() {
   const [code, setCode] = useState("");
   const [_package, setPackage]: any = useState({});
   const dispatch = useDispatch();
-  console.log(cart.total, cart.discount);
   const bankSurCharges =
     ((cart.total + shippingAmount - cart.discount) * 2.75) / 100;
   const taxPaypro = Number((bankSurCharges * 13) / 100);
@@ -98,7 +97,6 @@ function Cart() {
   const paybale = Math.round(
     Number(cart.total + shippingAmount - cart.discount + totalTax)
   );
-  console.log(bankSurCharges, taxPaypro, totalTax, paybale);
   const calculateDiscount = (): number => {
     // if(cart.discount){
     //   return cart.discount
@@ -188,7 +186,6 @@ function Cart() {
       .then((res: any) => {
         setloadingCheckout(false);
         if (res.status === 200) {
-          console.log(res);
           if (res.data.paymentToken) {
             window.location.replace(res.data.paymentToken);
           } else {
