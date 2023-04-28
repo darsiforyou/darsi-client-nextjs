@@ -11,7 +11,7 @@ export const get_categories = async (dispatch: any) => {
     const res = await publicRequest.get(
       "/categories/without_filter?isFeatured=true&isActive=true"
     );
-    let categories = res.data.sort((a: any,b: any)=> b.rank-a.rank)
+    let categories = res.data;
     dispatch(categorySuccess(categories));
   } catch (err) {
     dispatch(categoryFailure());
