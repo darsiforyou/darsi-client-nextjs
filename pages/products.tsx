@@ -55,7 +55,7 @@ export default function Search() {
         queryKey;
       const params = new URLSearchParams(filters);
       const res = await publicRequest.get(
-        `/products?page=${page}&limit=48&isActive=true&sort=${sort}&category=${category}&brand=${brand}&targetAge=${targetAge}`
+        `/products?page=${activePage}&limit=48&isActive=true&sort=${sort}&category=${category}&brand=${brand}&targetAge=${targetAge}`
       );
       const data = res.data;
       return data;
