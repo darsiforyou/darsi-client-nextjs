@@ -19,9 +19,10 @@ import { publicRequest } from "../requestMethods";
 import { ApiResponse, Product } from "../types/types";
 
 export default function Search() {
+  const router = useRouter();
   let { query } = useRouter();
-  const { category_id } = query;
-  const [activePage, setPage] = useState(1);
+  const { category_id, page: initialPage } = query; // Retrieve the page value from the URL query parameters
+  const [activePage, setPage] = useState(Number(initialPage) || 1); // Use the retrieved page value or default to 1
   const [sort, setSort] = useState("RECENT");
   const [brand, setBrand] = useState("");
   const [_categories, set_Categories] = useState([]);
@@ -79,6 +80,19 @@ export default function Search() {
     }
     refetch();
   }, [activePage, sort, category, query]);
+
+  useEffect(() => {
+    // Update the URL query parameter with the activePage value
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, page: activePage },
+      },
+      undefined,
+      { shallow: true }
+    );
+  }, [activePage]);
+
 
   return (
     <>
