@@ -17,6 +17,9 @@ a{
     pointer-events: none !important;
     background-color: rgb(223, 125, 125) !important;
 }
+.mantine-l7j47y{
+    padding-bottom: 20px !important;
+}
 /* // Osama Css */
  @media (max-width : 991px){
     body header.mantine-Header-root {
