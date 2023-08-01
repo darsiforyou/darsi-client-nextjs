@@ -83,7 +83,7 @@ function Login() {
           <Alert mb={"md"} icon={<IconInfoCircle size={16} />} title="Alert!">
             It seems like you are a Vendor or Referrer Please go to this{" "}
             <Anchor
-              href="https://dashboard-darsi.netlify.app/"
+              href="https://dashboard.darsi.pk/"
               underline
               target="_blank"
             >
@@ -119,7 +119,7 @@ function Login() {
                 radius="xs"
                 size="xs"
                 component="a"
-                href="https://dashboard-darsi.netlify.app/login"
+                href="https://dashboard.darsi.pk/login"
                 target="_blank"
               >
                 Are you a Vendor or Referrer? login here.
