@@ -239,13 +239,7 @@ export function FooterLinks({ links }: FooterLinksProps) {
           </Text>
         </Center>
       </Container>
-      <Container>
-        <Link href="https://team-fab.vercel.app/">
-          <Text color="#4d539f" align="center" size="md" weight="bold">
-            Made By TeamFab
-          </Text>
-        </Link>
-      </Container>
+
     </footer>
   );
 }
