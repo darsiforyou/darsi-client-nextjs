@@ -32,13 +32,30 @@ export default function Search() {
   const { data: brands, isFetching: isFetchingBrands } = useQuery({
     queryKey: ["brands"],
     queryFn: async () => {
-      const res = await publicRequest.get(`/brands?limit=1000`);
-      const data = res.data.data.docs;
-      const brands = data.map((brand: any) => ({
-        value: brand._id,
-        label: brand.title,
-      }));
-      return brands;
+      // const res = await publicRequest.get(`/brands?limit=1000`);
+      // const data = res.data.data.docs;
+      // const brands = data.map((brand: any) => ({
+      //   value: brand._id,
+      //   label: brand.title,
+      // }));
+      // return brands;
+
+        const res = await publicRequest.get(`/brands?limit=1000`);
+const data = res.data.data.docs;
+
+console.log(data);
+
+const brands = data
+  .map((brand: any) => ({
+    value: brand._id,
+    label: brand.title,
+  }))
+  .sort((a: any, b: any) => a.label.localeCompare(b.label)); // <-- Alphabetical sort
+
+return brands;
+
+
+      
     },
   });
 
