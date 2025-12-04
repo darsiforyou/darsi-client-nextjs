@@ -10,13 +10,38 @@ function HomeProducts({ cat }: any) {
   //   (state: any) => state.product
   // );
   const [products, setProducts] = useState([]);
+  
+  // useEffect(() => {
+  //   handleFetchData();
+  // }, []);
+  // const handleFetchData = async () => {
+  //   let data = await getProducts({ limit: 12, category: cat._id });
+  //   setProducts(data);
+  // };
+
+
+
   useEffect(() => {
-    handleFetchData();
-  }, []);
-  const handleFetchData = async () => {
-    let data = await getProducts({ limit: 12, category: cat._id });
-    setProducts(data);
-  };
+  handleFetchData();
+}, []);
+
+const handleFetchData = async () => {
+  let data = await getProducts({ limit: 12, category: cat._id });
+
+  const filtered = data.filter((prod: any) => 
+    prod.isActive === true &&
+    prod.isFeatured === true &&
+    prod.available === true
+  );
+
+  setProducts(filtered);
+};
+
+
+
+
+
+  
   const getCatProducts = (id: string) => {
     let productByCat = products.filter((x: any) => x.category === id);
     return productByCat;
