@@ -41,16 +41,20 @@ export default function Search() {
       // return brands;
 
         const res = await publicRequest.get(`/brands?limit=1000`);
-const data = res.data.data.docs;
+        const data = res.data.data.docs;
 
-console.log(data);
-
-const brands = data
-  .map((brand: any) => ({
-    value: brand._id,
-    label: brand.title,
-  }))
+        console.log(data);
+        
+        //first condition apply  brand.isActive==true
+        //2nd  transform data 
+       const brands = data
+      .filter((brand: any) => brand.isActive === true)
+      .map((brand: any) => ({
+       value: brand._id,
+      label: brand.title,
+     }))
   .sort((a: any, b: any) => a.label.localeCompare(b.label)); // <-- Alphabetical sort
+  //soring apply a to z
 
 return brands;
 

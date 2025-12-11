@@ -383,7 +383,12 @@ function Cart() {
                     </tbody>
                   </Table>
                 </ScrollArea>
-                <Box mb={10}>
+
+
+
+
+                {/* //payment gateway options */}
+                {/* <Box mb={10}>
                   <Radio.Group
                     value={paymentMethod}
                     onChange={setPaymentMethod}
@@ -399,7 +404,7 @@ function Cart() {
                       label="Card Payment / Easypaisa / Jazz Cash"
                     />
                   </Radio.Group>
-                </Box>
+                </Box> */}
                 {!cart.code && (
                   <>
                     <TextInput
