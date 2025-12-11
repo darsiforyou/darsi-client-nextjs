@@ -216,8 +216,9 @@ function Cart() {
       productId: x._id,
       vendor: x.vendor,
       title: x.title,
-      profitMargin: x.profitMargin,
+     
       productCode: x.productCode,
+      profitMargin: x.profitMargin * x.quantity,
       price: x.price,
       vendorPrice: x.vendorPrice,
       qty: x.quantity,
