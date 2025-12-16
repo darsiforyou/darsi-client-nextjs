@@ -113,6 +113,23 @@ function Cart() {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
+    const customerInfo = localStorage.getItem("customerInfo");
+    if (customerInfo) {
+    const userData = JSON.parse(customerInfo);
+    form.setValues({
+      firstname: userData.firstname || "",
+      lastname: userData.lastname || "",
+      email: userData.email || "",
+      phone: userData.phone || "", // you might want to store phone too
+      city: userData.city || "Karachi", // default if city not stored
+      postalCode: userData.postalCode || "",
+      address: userData.address || "",
+    });
+  }
+
+
+
+
     calculateDiscount();
   }, []);
 
