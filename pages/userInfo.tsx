@@ -68,7 +68,8 @@ function UserInfo() {
   }, []);
 
   // Tabs: "orders" | "profile" | "password"
-  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "password" | "forgotPassword">("orders");
+const [activeTab, setActiveTab] = useState<"orders" | "profile" | "password" | "forgotPassword" | "otpReset">("orders");
+
 
   // Profile state
   const [profile, setProfile] = useState({
@@ -86,11 +87,24 @@ function UserInfo() {
 
 
 
+
+
+
+
   // Forgot password email state
-  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotEmail, setForgotEmail] = useState(user.email);
   const [forgotLoading, setForgotLoading] = useState(false);
 
 
+
+
+const [otpData, setOtpData] = useState({
+  email:user.email,
+  otp: "",
+  newPassword: "",
+});
+
+const [otpLoading, setOtpLoading] = useState(false);
 
   // Orders query
   const [filters, setFilters] = useState({
@@ -188,35 +202,100 @@ function UserInfo() {
 
 
 
+// const handleForgotPassword = async (e: any) => {
+//     e.preventDefault();
+//     if (!forgotEmail) {
+//       return showNotification({
+//         message: "Please enter your email!",
+//         color: "red",
+//         autoClose: 4000,
+//       });
+//     }
+//     setForgotLoading(true);
+//     try {
+//       const res = await publicRequest.get(`/users/forgotPasswordOtp/${forgotEmail}`);
+//       showNotification({
+//         message: res.data.message || "OTP sent to your email!",
+//         color: "green",
+//         autoClose: 6000,
+//       });
+//       setForgotEmail("");
+//     } catch (err: any) {
+//       console.error(err);
+//       showNotification({
+//         message: err.response?.data?.message || "Failed to send OTP!",
+//         color: "red",
+//         autoClose: 6000,
+//       });
+//     } finally {
+//       setForgotLoading(false);
+//     }
+//   };
+
+
+
+  const handleOtpReset = async (e: any) => {
+  e.preventDefault();
+  if (!otpData.email || !otpData.otp || !otpData.newPassword) {
+    return showNotification({
+      message: "Please fill all fields!",
+      color: "red",
+      autoClose: 4000,
+    });
+  }
+  setOtpLoading(true);
+  try {
+    const res = await publicRequest.post("/users/resetPassword", otpData);
+    showNotification({
+      message: res.data.message || "Password reset successfully!",
+      color: "green",
+      autoClose: 5000,
+    });
+    setOtpData({ email: "", otp: "", newPassword: "" });
+    setActiveTab("password"); // redirect to password tab
+  } catch (err: any) {
+    console.error(err);
+    showNotification({
+      message: err.response?.data?.message || "Failed to reset password!",
+      color: "red",
+      autoClose: 5000,
+    });
+  } finally {
+    setOtpLoading(false);
+  }
+};
+
 const handleForgotPassword = async (e: any) => {
-    e.preventDefault();
-    if (!forgotEmail) {
-      return showNotification({
-        message: "Please enter your email!",
-        color: "red",
-        autoClose: 4000,
-      });
-    }
-    setForgotLoading(true);
-    try {
-      const res = await publicRequest.get(`/users/forgotPasswordOtp/${forgotEmail}`);
-      showNotification({
-        message: res.data.message || "OTP sent to your email!",
-        color: "green",
-        autoClose: 6000,
-      });
-      setForgotEmail("");
-    } catch (err: any) {
-      console.error(err);
-      showNotification({
-        message: err.response?.data?.message || "Failed to send OTP!",
-        color: "red",
-        autoClose: 6000,
-      });
-    } finally {
-      setForgotLoading(false);
-    }
-  };
+  e.preventDefault();
+  if (!forgotEmail) {
+    return showNotification({
+      message: "Please enter your email!",
+      color: "red",
+      autoClose: 4000,
+    });
+  }
+  setForgotLoading(true);
+  try {
+    const res = await publicRequest.get(`/users/forgotPasswordOtp/${forgotEmail}`);
+    showNotification({
+      message: res.data.message || "OTP sent to your email!",
+      color: "green",
+      autoClose: 6000,
+    });
+    setOtpData({ ...otpData, email: forgotEmail }); // prefill email in OTP form
+    setForgotEmail(user.email); // clear forgot password email input
+    setActiveTab("otpReset"); // switch to OTP verification tab
+  } catch (err: any) {
+    console.error(err);
+    showNotification({
+      message: err.response?.data?.message || "Failed to send OTP!",
+      color: "red",
+      autoClose: 6000,
+    });
+  } finally {
+    setForgotLoading(false);
+  }
+};
 
 
 
@@ -520,6 +599,35 @@ const handleForgotPassword = async (e: any) => {
               )}
 
 
+{/* OTP Verification & Reset Password */}
+{activeTab === "otpReset" && (
+  <Card shadow="sm" p="lg">
+    <Title order={4} mb="md">Verify OTP & Reset Password</Title>
+    <form onSubmit={handleOtpReset}>
+      <TextInput
+        label="Email"
+        placeholder="Enter your email"
+        value={otpData.email}
+        onChange={(e) => setOtpData({...otpData, email: e.currentTarget.value})}
+        required
+      />
+      <TextInput
+        label="OTP"
+        placeholder="Enter OTP"
+        value={otpData.otp}
+        onChange={(e) => setOtpData({...otpData, otp: e.currentTarget.value})}
+        required
+      />
+      <PasswordInput
+        label="New Password"
+        value={otpData.newPassword}
+        onChange={(e) => setOtpData({...otpData, newPassword: e.currentTarget.value})}
+        required
+      />
+      <Button mt="md" type="submit" loading={otpLoading}>Reset Password</Button>
+    </form>
+  </Card>
+)}
 
 
  {/* Forgot Password */}
@@ -535,7 +643,9 @@ const handleForgotPassword = async (e: any) => {
                       icon={<IconMail size={16} />}
                       value={forgotEmail}
                       onChange={(e) => setForgotEmail(e.currentTarget.value)}
-                      required
+
+                      disabled
+                      
                     />
                     <Button mt="md" type="submit" loading={forgotLoading}>
                       Send Reset Link / OTP
