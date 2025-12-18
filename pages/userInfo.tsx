@@ -13,13 +13,13 @@ import {
   ActionIcon,
   Modal,
   Title,
-  Center,
-  Table,
+  Box,
   Card,
+  TextInput,
+  Table,
+  PasswordInput,
 } from "@mantine/core";
-import { IconPhoneCall, IconAt, IconCode, IconEye } from "@tabler/icons";
-import { Badge, Box, NavLink } from "@mantine/core";
-import { IconChevronRight, IconActivity } from "@tabler/icons";
+import { NavLink } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
@@ -28,6 +28,8 @@ import { format } from "fecha";
 import { Order } from "../types/types";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { showNotification } from "@mantine/notifications";
+import { IconAt, IconEye, IconSettings, IconActivity, IconLock, IconMail } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
   icon: {
@@ -36,97 +38,198 @@ const useStyles = createStyles((theme) => ({
         ? theme.colors.dark[3]
         : theme.colors.gray[5],
   },
-
   name: {
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
   },
 }));
 
+// Fetch user orders
 const fetchOrderByUser = async ({ queryKey }: any) => {
   const [_, { search, page, limit, ...filters }] = queryKey;
   const params = new URLSearchParams(filters);
   const res: AxiosResponse = await publicRequest.get(
     `/orders?search=${search}&page=${page}&limit=${limit}&${params}`
   );
-  const data = res.data;
-  return data;
+  return res.data;
 };
+
 function UserInfo() {
+  const user = useSelector((state: any) => state.user.currentUser);
+  const router = useRouter();
+  const { classes } = useStyles();
 
-
-
-
-const user = useSelector((state: any) => state.user.currentUser);
-const router = useRouter();
-
-// redirect if user is not logged in
-useEffect(() => {
-  if (!user) {
-    router.push("/login");
-  }
-}, [user]);
- 
-   //view model state
-   const [viewModalOpened, setViewModalOpened] = useState(false);
-   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-
-  
-  const viewProductDetails = (record: any) => {
-   setSelectedProduct(record);
-   setViewModalOpened(true);
-};
-
-
-
-
-
+  // Redirect if user not logged in
+  useEffect(() => {
+    if (!user) router.push("/login");
+  }, [user]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const { classes } = useStyles();
-  
-  const [filters, setfilters] = useState({
+
+  // Tabs: "orders" | "profile" | "password"
+  const [activeTab, setActiveTab] = useState<"orders" | "profile" | "password" | "forgotPassword">("orders");
+
+  // Profile state
+  const [profile, setProfile] = useState({
+    firstname: user?.firstname || "",
+    lastname: user?.lastname || "",
+    email: user?.email || "",
+  });
+
+  // Password state
+  const [passwords, setPasswords] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+
+
+  // Forgot password email state
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+
+
+
+  // Orders query
+  const [filters, setFilters] = useState({
     search: "",
     limit: 10,
     page: 1,
     user: user?._id || "",
   });
-  const {
-    isLoading,
-    error,
-    data: orders,
-    refetch,
-  } = useQuery(["orders", filters], fetchOrderByUser, {
-    enabled: true,
-    refetchOnWindowFocus: false,
-  });
-  const onPagination = async (event: any) => {
-    await setfilters((prev: any) => ({
-      ...prev,
-      page: event,
-    }));
+
+  const { isLoading, data: orders, refetch } = useQuery(
+    ["orders", filters],
+    fetchOrderByUser,
+    { enabled: true, refetchOnWindowFocus: false }
+  );
+
+  const onPagination = async (page: number) => {
+    setFilters((prev) => ({ ...prev, page }));
     await refetch();
   };
+
+  // View order modal
+  const [viewModalOpened, setViewModalOpened] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const viewProductDetails = (record: any) => {
+    setSelectedProduct(record);
+    setViewModalOpened(true);
+  };
+
+  // Profile update
+  const handleProfileUpdate = async (e: any) => {
+    e.preventDefault();
+    try {
+      await publicRequest.put(
+        `/users/${user._id}`,
+        {
+          firstname: profile.firstname,
+          lastname: profile.lastname,
+          email: profile.email,
+        },
+        { headers: { Authorization: `Bearer ${user.accessToken}` } }
+      );
+      showNotification({
+        message: "Profile updated successfully!",
+        color: "green",
+        autoClose: 5000,
+      });
+    } catch (err) {
+      console.error(err);
+      showNotification({
+        message: "Server error! Please try again later.",
+        color: "red",
+        autoClose: 5000,
+      });
+    }
+  };
+
+  // Password update
+  const handlePasswordUpdate = async (e: any) => {
+    e.preventDefault();
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      return showNotification({
+        message: "New password and confirm password do not match!",
+        color: "red",
+        autoClose: 5000,
+      });
+    }
+
+    try {
+       await publicRequest.put(
+  `/users/changeUserPassword/${user._id}`,
+  {
+    oldPassword: passwords.oldPassword,
+    newPassword: passwords.newPassword,
+  },
+  { headers: { Authorization: `Bearer ${user.accessToken}` } }
+);
+
+
+
+      showNotification({
+        message: "Password updated successfully!",
+        color: "green",
+        autoClose: 5000,
+      });
+      setPasswords({ oldPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (err: any) {
+      console.error(err);
+      showNotification({
+        message: err.response?.data?.message || "Password update failed!",
+        color: "red",
+        autoClose: 5000,
+      });
+    }
+  };
+
+
+
+const handleForgotPassword = async (e: any) => {
+    e.preventDefault();
+    if (!forgotEmail) {
+      return showNotification({
+        message: "Please enter your email!",
+        color: "red",
+        autoClose: 4000,
+      });
+    }
+    setForgotLoading(true);
+    try {
+      const res = await publicRequest.get(`/users/forgotPasswordOtp/${forgotEmail}`);
+      showNotification({
+        message: res.data.message || "OTP sent to your email!",
+        color: "green",
+        autoClose: 6000,
+      });
+      setForgotEmail("");
+    } catch (err: any) {
+      console.error(err);
+      showNotification({
+        message: err.response?.data?.message || "Failed to send OTP!",
+        color: "red",
+        autoClose: 6000,
+      });
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
+
+
   return (
     <>
       <Head>
         <title>Darsi | User Profile</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Container
-        size="lg"
-        sx={{
-          marginBottom: 30,
-          marginTop: 30,
-          backgroundColor: "white",
-          padding: 20,
-        }}
-      >
 
-
-
-     <Modal
+      <Container size="lg" sx={{ marginBottom: 30, marginTop: 30, backgroundColor: "white", padding: 20 }}>
+        {/* View Order Modal */}
+         <Modal
   opened={viewModalOpened}
   onClose={() => setViewModalOpened(false)}
   size="lg"
@@ -249,161 +352,205 @@ useEffect(() => {
   )}
 </Modal>
 
-
-
-
+        {/* User Info Header */}
         <Group noWrap sx={{ justifyContent: "space-between", alignItems: "end" }}>
           <Group noWrap>
             <Avatar src={""} size={94} radius="md" />
             <div>
-              <Text
-                size="xs"
-                sx={{ textTransform: "uppercase" }}
-                weight={700}
-                color="dimmed"
-              >
-                {user?.role || ''}
-              </Text>
-
-              <Text size="lg" weight={500} className={classes.name}>
-                {user?.firstname || ''} {user?.lastname || ''}
-              </Text>
-
+              <Text size="xs" sx={{ textTransform: "uppercase" }} weight={700} color="dimmed">{user?.role || ""}</Text>
+              <Text size="lg" weight={500} className={classes.name}>{user?.firstname} {user?.lastname}</Text>
               <Group noWrap spacing={10} mt={3}>
                 <IconAt stroke={1.5} size={16} className={classes.icon} />
-                <Text size="xs" color="dimmed">
-                  {user?.email || ''}
-                </Text>
+                <Text size="xs" color="dimmed">{user?.email}</Text>
               </Group>
-
-              {/* <Group noWrap spacing={10} mt={5}>
-                <IconCode stroke={1.5} size={16} className={classes.icon} />
-                <Text size="xs" color="dimmed">
-                  {user.user_code}
-                </Text>
-              </Group> */}
             </div>
           </Group>
-          {/* <Button radius="xl" size="xs">
-          Edit
-        </Button> */}
         </Group>
+
         <Divider my={20} />
+
         <Grid columns={4} sx={{ alignItems: "start" }}>
+          {/* Sidebar */}
           <Grid.Col sm={4} md={1}>
             <Box sx={{ width: "100%" }}>
-              <NavLink
-                label="My Orders"
-                icon={<IconActivity size={16} stroke={1.5} />}
-                rightSection={<IconChevronRight size={12} stroke={1.5} />}
-                active
+              <NavLink label="My Orders" icon={<IconActivity size={16} />} active={activeTab === "orders"} onClick={() => setActiveTab("orders")} />
+              <NavLink label="Edit Profile" icon={<IconSettings size={16} />} active={activeTab === "profile"} onClick={() => setActiveTab("profile")} />
+              <NavLink label="Change Password" icon={<IconLock size={16} />} active={activeTab === "password"} onClick={() => setActiveTab("password")} />
+               <NavLink
+                label="Forgot Password"
+                icon={<IconMail size={16} />}
+                active={activeTab === "forgotPassword"}
+                onClick={() => setActiveTab("forgotPassword")}
               />
             </Box>
           </Grid.Col>
+
+          {/* Content */}
           <Grid.Col sm={4} md={3}>
             <Box sx={{ width: "100%" }}>
-              <DataTable
-                withColumnBorders
-                striped
-                highlightOnHover
-                minHeight={"150px"}
-                page={orders?.data?.page}
-                onPageChange={onPagination}
-                totalRecords={orders?.data?.totalDocs}
-                recordsPerPage={filters.limit}
-                idAccessor="_id"
-                fontSize="sm"
-                records={orders?.data?.docs}
-                fetching={isLoading}
-                columns={[
-                  {
-                    accessor: "_id",
-                    title: "#",
-                    textAlignment: "right",
-                    width: 40,
-                    render: (record: Order) =>
-                      orders?.data?.docs.indexOf(record) + 1,
-                  },
+              {/* Orders */}
+            {/* Orders Table */}
+{activeTab === "orders" && (
+  <DataTable
+    withColumnBorders
+    striped
+    highlightOnHover
+    minHeight="150px"
+    page={orders?.data?.page}
+    onPageChange={onPagination}
+    totalRecords={orders?.data?.totalDocs}
+    recordsPerPage={filters.limit}
+    idAccessor="_id"
+    fontSize="sm"
+    records={orders?.data?.docs}
+    fetching={isLoading}
+    columns={[
+      {
+        accessor: "_id",
+        title: "#",
+        textAlignment: "right",
+        width: 40,
+        render: (record: Order) =>
+          orders?.data?.docs.indexOf(record) + 1,
+      },
+      {
+        accessor: "createdAt",
+        ellipsis: true,
+        width: 100,
+        render: (record) => (
+          <span>{format(new Date(record.createdAt), "DD-MMM-YY")}</span>
+        ),
+      },
+      { accessor: "order_number", title: "Order No" },
+      {
+        accessor: "totalQty",
+        title: "Qty",
+        render: ({ cart }: Order) => <span>{cart.totalQty}</span>,
+      },
+      {
+        accessor: "totalCost",
+        title: "Cost",
+        render: ({ cart }: Order) => <span>{cart.totalCost}</span>,
+      },
+      {
+        accessor: "discount",
+        render: ({ cart }: Order) => <span>{cart.discount}</span>,
+      },
+      {
+        accessor: "netCost",
+        render: ({ cart }: Order) => <span>{cart.netCost}</span>,
+      },
+      { accessor: "orderStatus", width: 200 },
+      {
+        accessor: "actions",
+        title: "View",
+        width: 100,
+        render: (record) => (
+          <ActionIcon
+            color="blue"
+            onClick={() => viewProductDetails(record)}
+          >
+            <IconEye size={18} />
+          </ActionIcon>
+        ),
+      },
+    ]}
 
-                  {
-                    accessor: "createdAt",
-                    ellipsis: true,
-                    width: 100,
-                    render: (record) => (
-                      <span>
-                        {format(new Date(record.createdAt), "DD-MMM-YY")}
-                      </span>
-                    ),
-                  },
-                  { accessor: "name", width: 150, hidden: user?.role !== "Admin" },
-                  {
-                    accessor: "email",
-                    width: 150,
-                    hidden: user?.role !== "Admin",
-                    ellipsis: true,
-                  },
-                  {
-                    accessor: "phone",
-                    width: 100,
-                    hidden: user?.role !== "Admin",
-                  },
-                  {
-                    accessor: "order_number",
-                    title: "Order No",
-                  },
-                  {
-                    accessor: "totalQty",
-                    title: "Qty",
-                    render: ({ cart }: Order, index) => (
-                      <span>{cart.totalQty}</span>
-                    ),
-                  },
-                  {
-                    accessor: "totalCost",
-                    title: "Cost",
-                    render: ({ cart }: Order, index) => (
-                      <span>{cart.totalCost}</span>
-                    ),
-                  },
-                  {
-                    accessor: "discount",
-                    render: ({ cart }: Order, index) => (
-                      <span>{cart.discount}</span>
-                    ),
-                  },
-                  {
-                    accessor: "netCost",
-                    render: ({ cart }: Order, index) => (
-                      <span>{cart.netCost}</span>
-                    ),
-                  },
 
-                  {
-                    accessor: "city",
-                    hidden: user?.role !== "Admin",
-                    render: (record: Order, index) => <span>{record.city}</span>,
-                  },
-                  {
-                    accessor: "orderStatus",
-                    width: 200,
-                  },
 
-                  {
-               accessor: "actions",
-               title: "view",
-                width: 100,
-                render: (record) => (
-                 <ActionIcon
-                 color="blue"
-                 onClick={() => viewProductDetails(record)}
-                 >
-                 <IconEye size={18} />
-               </ActionIcon>
-             ),
-          },
-                ]}
-              />
+    
+  />
+)}
+
+
+{/* Fixed Order Information Section */}
+
+
+
+
+
+               
+
+
+
+
+              {/* Profile */}
+              {activeTab === "profile" && (
+                <Card shadow="sm" p="lg">
+                  <Title order={4} mb="md">Edit Profile</Title>
+                  <form onSubmit={handleProfileUpdate}>
+                    <Grid>
+                      <Grid.Col md={6}>
+                        <TextInput label="First Name" value={profile.firstname} onChange={(e) => setProfile({...profile, firstname: e.target.value})} required />
+                      </Grid.Col>
+                      <Grid.Col md={6}>
+                        <TextInput label="Last Name" value={profile.lastname} onChange={(e) => setProfile({...profile, lastname: e.target.value})} required />
+                      </Grid.Col>
+                      <Grid.Col md={6}>
+                        <TextInput label="Email" value={profile.email} disabled />
+                      </Grid.Col>
+                      <Grid.Col md={6}>
+                        <TextInput label="Role" value={user.role} disabled />
+                      </Grid.Col>
+                    </Grid>
+                    <Button mt="md" type="submit">Update Profile</Button>
+                  </form>
+                </Card>
+              )}
+
+              {/* Password */}
+              {activeTab === "password" && (
+                <Card shadow="sm" p="lg">
+                  <Title order={4} mb="md">Change Password</Title>
+                  <form onSubmit={handlePasswordUpdate}>
+                    <Grid>
+                      <Grid.Col md={12}>
+                        <PasswordInput label="Old Password" value={passwords.oldPassword} onChange={(e) => setPasswords({...passwords, oldPassword: e.target.value})} required />
+                      </Grid.Col>
+                      <Grid.Col md={12}>
+                        <PasswordInput label="New Password" value={passwords.newPassword} onChange={(e) => setPasswords({...passwords, newPassword: e.target.value})} required />
+                      </Grid.Col>
+                      <Grid.Col md={12}>
+                        <PasswordInput label="Confirm New Password" value={passwords.confirmPassword} onChange={(e) => setPasswords({...passwords, confirmPassword: e.target.value})} required />
+                      </Grid.Col>
+                    </Grid>
+                    <Button mt="md" type="submit">Update Password</Button>
+                  </form>
+                </Card>
+              )}
+
+
+
+
+ {/* Forgot Password */}
+              {activeTab === "forgotPassword" && (
+                <Card shadow="sm" p="lg">
+                  <Title order={4} mb="md">
+                    Forgot Password
+                  </Title>
+                  <form onSubmit={handleForgotPassword}>
+                    <TextInput
+                      label="Email Address"
+                      placeholder="Enter your email"
+                      icon={<IconMail size={16} />}
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.currentTarget.value)}
+                      required
+                    />
+                    <Button mt="md" type="submit" loading={forgotLoading}>
+                      Send Reset Link / OTP
+                    </Button>
+                  </form>
+                </Card>
+              )}
+
+
+
+
             </Box>
+
+
+            
           </Grid.Col>
         </Grid>
       </Container>
