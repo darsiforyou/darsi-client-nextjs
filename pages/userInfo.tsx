@@ -308,7 +308,7 @@ const handleForgotPassword = async (e: any) => {
 
       <Container size="lg" sx={{ marginBottom: 30, marginTop: 30, backgroundColor: "white", padding: 20 }}>
         {/* View Order Modal */}
-         <Modal
+          <Modal
   opened={viewModalOpened}
   onClose={() => setViewModalOpened(false)}
   size="lg"
