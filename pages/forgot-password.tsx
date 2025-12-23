@@ -11,13 +11,14 @@ import { showNotification } from "@mantine/notifications";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import {
   changeUserPassword,
   forgotPasswordOTP,
 } from "../redux/action/auth_api";
+
 function ForgotPassword() {
-  const [isOtpSend, setIsOtpSend] = useState(false);
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [resending, setResending] = useState(false);
   const form = useForm({
     validateInputOnChange: true,
     initialValues: {
@@ -26,68 +27,124 @@ function ForgotPassword() {
       new_password: "",
     },
     validate: {
-      user_email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      otp_code: (value) =>
-        isOtpSend ? (!value ? "Code is Required" : null) : null,
+      user_email: (value) =>
+        /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email",
+      otp_code: (value) => (isOtpSent ? (!value ? "Code is required" : null) : null),
       new_password: (value) =>
-        isOtpSend
+        isOtpSent
           ? /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
               value
             )
             ? null
-            : "Minimum eight characters, at least one special character, one letter and one number"
+            : "Minimum 8 chars, 1 letter, 1 number, 1 special char"
           : null,
     },
   });
-  const dispatch = useDispatch();
-  let router = useRouter();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Send OTP
   const handleGetOtp = async (values: any) => {
-    let res = await forgotPasswordOTP(values.user_email);
-    if (res.status !== 200) {
+    try {
+      const res = await forgotPasswordOTP(values.user_email);
+      if (res.status === 200) {
+        showNotification({
+          message: res.data?.message || "OTP sent successfully",
+          color: "green",
+          autoClose: 5000,
+        });
+        setIsOtpSent(true);
+      } else {
+        showNotification({
+          message: "Something went wrong!",
+          color: "red",
+          autoClose: 5000,
+        });
+      }
+    } catch (err) {
       showNotification({
-        autoClose: 5000,
-        message: "Something went wrong!",
+        message: "Failed to send OTP",
         color: "red",
+        autoClose: 5000,
       });
-
-      return;
     }
-    showNotification({
-      autoClose: 5000,
-      message: res.data?.message,
-      color: "green",
-    });
-
-    setIsOtpSend(true);
   };
+
+  // Resend OTP
+  const handleResendOtp = async () => {
+    setResending(true);
+    try {
+      const res = await forgotPasswordOTP(form.values.user_email);
+      if (res.status === 200) {
+        showNotification({
+          message: res.data?.message || "OTP resent successfully",
+          color: "green",
+          autoClose: 5000,
+        });
+      } else {
+        showNotification({
+          message: "Failed to resend OTP",
+          color: "red",
+          autoClose: 5000,
+        });
+      }
+    } catch (err) {
+      showNotification({
+        message: "Failed to resend OTP",
+        color: "red",
+        autoClose: 5000,
+      });
+    } finally {
+      setResending(false);
+    }
+  };
+
+  // Reset password after OTP verification
   const handleChangePassword = async (values: any) => {
-    let res = await changeUserPassword(values);
-    if (res.status !== 200) {
+    const body = {
+      email: values.user_email,
+      otp: values.otp_code,
+      newPassword: values.new_password,
+    };
+
+    try {
+      const res = await changeUserPassword(body);
+      if (res.status === 200) {
+        showNotification({
+          message: res.data?.message || "Password reset successfully",
+          color: "green",
+          autoClose: 5000,
+        });
+        router.push("/login");
+      } else {
+        showNotification({
+          message: res.data?.message || "Something went wrong",
+          color: "red",
+          autoClose: 5000,
+        });
+      }
+    } catch (err) {
       showNotification({
-        autoClose: 5000,
-        message: "Something went wrong!",
+        message: "Failed to reset password",
         color: "red",
+        autoClose: 5000,
       });
-      return;
     }
-    showNotification({
-      autoClose: 5000,
-      message: res.data?.message,
-      color: "green",
-    });
-    // setIsOtpSend(false)
-    // navigate("/login", { replace: true });
   };
+
+  // Form submit
   const handleSubmit = (values: any) => {
-    if (isOtpSend) {
+    if (isOtpSent) {
       handleChangePassword(values);
     } else {
       handleGetOtp(values);
     }
   };
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
   return (
     <>
       <Head>
@@ -98,51 +155,60 @@ function ForgotPassword() {
       <Container
         size="xs"
         sx={{
-          marginBottom: 30,
           marginTop: 30,
+          marginBottom: 30,
           backgroundColor: "white",
           padding: 20,
         }}
       >
-        <Text weight={600} size="xl" sx={{ lineHeight: 1, marginBottom: 20 }}>
+        <Text weight={600} size="xl" sx={{ marginBottom: 20 }}>
           Forgot Password
         </Text>
+
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
-            withAsterisk
             label="Email"
-            readOnly={isOtpSend}
-            placeholder="Enter Your Email"
+            placeholder="Enter your email"
+            withAsterisk
+            readOnly={isOtpSent}
             {...form.getInputProps("user_email")}
           />
-          {isOtpSend && (
+
+          {isOtpSent && (
             <>
               <PasswordInput
-                placeholder="Enter Your New Password"
                 label="New Password"
+                placeholder="Enter your new password"
                 withAsterisk
                 {...form.getInputProps("new_password")}
               />
               <TextInput
+                label="OTP Code"
+                placeholder="Enter OTP code"
                 withAsterisk
-                label="OPT Code"
-                placeholder="Enter OTP Code"
                 {...form.getInputProps("otp_code")}
               />
             </>
           )}
+
           <Group position="right" mt="md">
-            <Button type="button" variant="subtle" radius="xs" size="xs">
-              Resend Code
-            </Button>
+            {isOtpSent && (
+              <Button
+                type="button"
+                variant="subtle"
+                size="xs"
+                radius="xs"
+                loading={resending}
+                onClick={handleResendOtp}
+              >
+                Resend Code
+              </Button>
+            )}
             <Button
               type="submit"
               sx={{
                 backgroundColor: "#f85606",
-                "&:hover": {
-                  backgroundColor: "#f85606",
-                  transform: "scale(1.1)",
-                },
+                "&:hover": { backgroundColor: "#f85606", transform: "scale(1.05)" },
               }}
             >
               Submit

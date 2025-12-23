@@ -73,7 +73,7 @@ export const forgotPasswordOTP = async (email: string) => {
 
 export const changeUserPassword = async (body: any) => {
   try {
-    const res = await publicRequest.post("/users/changeUserPassword/", body);
+    const res = await publicRequest.post("/users/resetPassword/", body);
     return res;
   } catch (err) {
     throw err;
