@@ -152,12 +152,26 @@ function Register() {
             autoComplete="off"
             {...form.getInputProps("password")}
           />
-          <PasswordInput
-            placeholder="Enter Your Confirm Password"
-            label="Confirm Password"
-            withAsterisk
-            {...form.getInputProps("cpassword")}
-          />
+       <PasswordInput
+  placeholder="Enter Your Confirm Password"
+  label="Confirm Password"
+  withAsterisk
+  {...form.getInputProps("cpassword")}
+/>
+
+<Button
+  fullWidth
+  mt="md"
+  variant="outline"
+  onClick={() =>
+    (window.location.href =
+      `${process.env.NEXT_PUBLIC_API_URL}api/auth/google`)
+  }
+>
+  Continue with Google
+</Button>
+
+
           {type === "Referrer" && (
             <>
               <Select
@@ -184,6 +198,8 @@ function Register() {
               component={Link}
               href="/login"
             >
+
+            
               Are you already a member? Please login
             </Button>
             <Button

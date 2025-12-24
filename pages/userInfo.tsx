@@ -55,6 +55,7 @@ const fetchOrderByUser = async ({ queryKey }: any) => {
 
 function UserInfo() {
   const user = useSelector((state: any) => state.user.currentUser);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { classes } = useStyles();
 
@@ -62,6 +63,9 @@ function UserInfo() {
   useEffect(() => {
     if (!user) router.push("/login");
   }, [user]);
+
+
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -92,14 +96,14 @@ const [activeTab, setActiveTab] = useState<"orders" | "profile" | "password" | "
 
 
   // Forgot password email state
-  const [forgotEmail, setForgotEmail] = useState(user.email);
+  const [forgotEmail, setForgotEmail] = useState(user?.email);
   const [forgotLoading, setForgotLoading] = useState(false);
 
 
 
 
 const [otpData, setOtpData] = useState({
-  email:user.email,
+  email:user?.email,
   otp: "",
   newPassword: "",
 });
@@ -569,7 +573,7 @@ const handleForgotPassword = async (e: any) => {
                         <TextInput label="Email" value={profile.email} disabled />
                       </Grid.Col>
                       <Grid.Col md={6}>
-                        <TextInput label="Role" value={user.role} disabled />
+                        <TextInput label="Role" value={user?.role} disabled />
                       </Grid.Col>
                     </Grid>
                     <Button mt="md" type="submit">Update Profile</Button>
