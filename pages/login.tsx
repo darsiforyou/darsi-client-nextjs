@@ -85,7 +85,7 @@ export default function Login() {
 
   // Uses last signed-in Google account
   const googleLoginDefault = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}api/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`;
   };
 
   // Forces Google to ask for email & password
