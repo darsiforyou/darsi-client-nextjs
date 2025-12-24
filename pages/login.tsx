@@ -90,7 +90,7 @@ export default function Login() {
 
   // Forces Google to ask for email & password
   // const googleLoginDifferentAccount = () => {
-  //   window.location.href = `${process.env.NEXT_PUBLIC_API_URL}api/auth/google?prompt=select_account`;
+  //   window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google?prompt=select_account`;
   // };
 const googleLoginDifferentAccount = () => {
   const width = 500;
