@@ -62,9 +62,15 @@ export default function Login() {
     }
   };
 
+
   const handleGoogleLogin = () => {
-    window.location.href = `https://darsi-backend.vercel.app/api/auth/google/callback`;
-  };
+  
+    window.location.href ="https://darsi-backend.vercel.app/api/auth/google"
+
+  
+
+};
+
 
   return (
     <>
@@ -122,7 +128,12 @@ export default function Login() {
 </div>
 
 
-<button className="google-btn" onClick={handleGoogleLogin}>
+<button
+  type="button"
+  className="google-btn"
+  onClick={handleGoogleLogin}
+>
+
   <span className="google-icon">
     <GoogleIcon />
   </span>
