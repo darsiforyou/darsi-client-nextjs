@@ -347,8 +347,11 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
           ) : (
             <>
               <Link className={classes.upperLink} href="/userInfo">
-                {user?.firstname + " " + user?.lastname}
-              </Link>
+  <strong>
+    {(user?.firstname + " " + user?.lastname).toUpperCase()}
+  </strong>
+</Link>
+
               <a
                 className={classes.upperLink}
                 href="#"
