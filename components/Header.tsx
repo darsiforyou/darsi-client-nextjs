@@ -318,15 +318,17 @@ export function HeaderResponsive({ links }: HeaderResponsiveProps) {
     <>
       <Header height={HEADER_HEIGHT} className={classes.root}>
         <Container size="lg" className={classes.topHeader}>
-          <a
+          {/* <a
             className={classes.upperLink}
             href="https://dashboard.darsi.pk/vendor/signup"
             target="_blank"
             rel="noreferrer"
             color="#FF8000"
-          >
-            Become a Vendor
-          </a>
+          > */}
+            {/* Become a Vendor
+          </a> */}
+
+
           <a
             className={classes.upperLink}
             href="https://dashboard.darsi.pk/ref/signup"
