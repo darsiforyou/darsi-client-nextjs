@@ -423,20 +423,23 @@ function ProductDetail() {
             >
               You May Also Like
             </Text>
-            <SimpleGrid
-              breakpoints={[
-                { minWidth: 300, cols: 2 },
-                { minWidth: "xs", cols: 3 },
-                { minWidth: "sm", cols: 4 },
-                { minWidth: "md", cols: 6 },
-              ]}
-            >
-              {productdata?.map((product: any, i: number) => (
-                <div key={i} onClick={() => window.scrollTo(0, 0)}>
-                  <ProductCard product={product} />
-                </div>
-              ))}
-            </SimpleGrid>
+        <SimpleGrid
+  breakpoints={[
+    { minWidth: 300, cols: 2 },
+    { minWidth: "xs", cols: 3 },
+    { minWidth: "sm", cols: 4 },
+    { minWidth: "md", cols: 6 },
+  ]}
+>
+  {productdata
+    ?.filter((product: any) => product.isActive) // ✅ sirf active products
+    .map((product: any, i: number) => (
+      <div key={i} onClick={() => window.scrollTo(0, 0)}>
+        <ProductCard product={product} />
+      </div>
+    ))}
+</SimpleGrid>
+
           </Grid.Col>
         </Grid>
       </Container>

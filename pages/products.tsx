@@ -25,6 +25,7 @@ export default function Search() {
   const [activePage, setPage] = useState(Number(initialPage) || 1); // Use the retrieved page value or default to 1
   const [sort, setSort] = useState("RECENT");
   const [brand, setBrand] = useState("");
+  const [subject,setSubject] = useState("");
   const [_categories, set_Categories] = useState([]);
   const [category, setCategory] = useState(
     Array.isArray(category_id) ? category_id[0] : category_id || ""
@@ -54,6 +55,14 @@ export default function Search() {
       label: brand.title,
      }))
   .sort((a: any, b: any) => a.label.localeCompare(b.label)); // <-- Alphabetical sort
+
+
+
+
+
+
+
+
   //soring apply a to z
 
 return brands;
@@ -63,27 +72,70 @@ return brands;
     },
   });
 
+
+
+  const { data: subjects, isFetching: isFetchingSubjects } = useQuery({
+  queryKey: ["subjects"],
+  queryFn: async () => {
+    const res = await publicRequest.get(
+      `/subjects?search=&page=1&limit=1000&productCode=&subject=&isActive=`
+    );
+
+    const data = res.data.data.docs;
+
+    console.log("Subjects:", data);
+
+    const subjects = data
+      // 1️⃣ sirf active subjects
+      .filter((subject: any) => subject.isActive === true)
+
+      // 2️⃣ transform for Select
+      .map((subject: any) => ({
+        value: subject.title,
+        label: subject.title.trim(),
+      }))
+
+      // 3️⃣ A–Z sorting
+      .sort((a: any, b: any) => a.label.localeCompare(b.label));
+
+    return subjects;
+  },
+});
+
+
+
   const [filters, setFilters] = useState({
     page: activePage,
     sort: sort,
     category: category,
     brand: brand,
     targetAge: "",
+    subject:subject,
+    
   });
+
+
+
+
+
+
   const { data, isFetching, refetch } = useQuery<ApiResponse<Product>>({
     queryKey: ["products", filters],
     queryFn: async ({ queryKey }: any) => {
-      const [_, { page, sort, category, brand, targetAge, ...filters }] =
+      const [_, { page, sort, category, brand,subject, targetAge, ...filters }] =
         queryKey;
       const params = new URLSearchParams(filters);
       const res = await publicRequest.get(
-        `/products?page=${activePage}&limit=48&isActive=true&sort=${sort}&category=${category}&brand=${brand}&targetAge=${targetAge}`
+        `/products?page=${activePage}&limit=48&isActive=true&sort=${sort}&category=${category}&brand=${brand}&targetAge=${targetAge}&search=${subject}`
       );
       const data = res.data;
       return data;
     },
     refetchOnWindowFocus: false,
   });
+
+
+
   const { categories } = useSelector((state: any) => state.category);
   useEffect(() => {
     let cats: any = [{ label: "All", value: "" }];
@@ -219,6 +271,33 @@ return brands;
                           }));
                         }}
                       />
+
+
+                      <Select
+                        label="Subjects"
+                        data={[{ label: "All", value: "" }, ...subjects]}
+                        value={filters.subject}
+                        placeholder="Select Subjects"
+                        clearable
+                        onChange={(e: any) => {
+                          setFilters((prev) => ({
+                            ...prev,
+                            page: 1,
+                            subject: e,
+                          }));
+                        }}
+                      />
+
+
+
+
+
+
+
+
+
+
+
                     </SimpleGrid>
                   </Accordion.Panel>
                 </Accordion.Item>
