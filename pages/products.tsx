@@ -30,31 +30,34 @@ export default function Search() {
   const [category, setCategory] = useState(
     Array.isArray(category_id) ? category_id[0] : category_id || ""
   );
-  const { data: brands, isFetching: isFetchingBrands } = useQuery({
-    queryKey: ["brands"],
-    queryFn: async () => {
-      // const res = await publicRequest.get(`/brands?limit=1000`);
-      // const data = res.data.data.docs;
-      // const brands = data.map((brand: any) => ({
-      //   value: brand._id,
-      //   label: brand.title,
-      // }));
-      // return brands;
 
-        const res = await publicRequest.get(`/brands?limit=1000`);
-        const data = res.data.data.docs;
+  //old code 
+  //1312026
+//   const { data: brands, isFetching: isFetchingBrands } = useQuery({
+//     queryKey: ["brands"],
+//     queryFn: async () => {
+//       // const res = await publicRequest.get(`/brands?limit=1000`);
+//       // const data = res.data.data.docs;
+//       // const brands = data.map((brand: any) => ({
+//       //   value: brand._id,
+//       //   label: brand.title,
+//       // }));
+//       // return brands;
 
-        console.log(data);
+//         const res = await publicRequest.get(`/brands?limit=1000`);
+//         const data = res.data.data.docs;
+
+//         console.log(data);
         
-        //first condition apply  brand.isActive==true
-        //2nd  transform data 
-       const brands = data
-      .filter((brand: any) => brand.isActive === true)
-      .map((brand: any) => ({
-       value: brand._id,
-      label: brand.title,
-     }))
-  .sort((a: any, b: any) => a.label.localeCompare(b.label)); // <-- Alphabetical sort
+//         //first condition apply  brand.isActive==true
+//         //2nd  transform data 
+//        const brands = data
+//       .filter((brand: any) => brand.isActive === true)
+//       .map((brand: any) => ({
+//        value: brand._id,
+//       label: brand.title,
+//      }))
+//   .sort((a: any, b: any) => a.label.localeCompare(b.label)); // <-- Alphabetical sort
 
 
 
@@ -63,16 +66,51 @@ export default function Search() {
 
 
 
-  //soring apply a to z
+//   //soring apply a to z
 
-return brands;
+// return brands;
 
 
       
-    },
-  });
+//     },
+//   });
 
 
+//latest code hai
+//1312026
+const { data: brands = [], isFetching: isFetchingBrands } = useQuery({
+  queryKey: ["brands"],
+  queryFn: async () => {
+    try {
+      // Fetch all brands
+      const brandsRes = await publicRequest.get(`/brands?limit=1000`);
+      const allBrands = brandsRes.data?.data?.docs || [];
+      
+      // If you already have products data from another query, use it directly
+      // Otherwise, fetch products to check which brands have active products
+      const productsRes = await publicRequest.get(`/products?limit=1000&isActive=true`);
+      const activeProducts = productsRes.data?.data?.docs || [];
+      
+      // Create a Set of brand IDs that have active products
+      const brandsWithActiveProducts = new Set(
+        activeProducts.map((p: any) => p.brand).filter(Boolean)
+      );
+      
+      // Filter and transform brands
+      return allBrands
+        .filter((brand: any) => brandsWithActiveProducts.has(brand._id))
+        .map((brand: any) => ({
+          value: brand._id,
+          label: brand.title,
+        }))
+        .sort((a: any, b: any) => a.label.localeCompare(b.label));
+        
+    } catch (error) {
+      console.error("Error fetching brands:", error);
+      return [];
+    }
+  },
+});
 
   const { data: subjects, isFetching: isFetchingSubjects } = useQuery({
   queryKey: ["subjects"],
@@ -259,20 +297,25 @@ return brands;
                           setFilters((prev) => ({ ...prev, page: 1, sort: e }));
                         }}
                       />
+
+
+                   
+
+
                       <Select
-                        label="Brands"
-                        data={[{ label: "All", value: "" }, ...brands]}
-                        value={filters.brand}
-                        placeholder="Select Brand"
-                        clearable
-                        onChange={(e: any) => {
-                          setFilters((prev) => ({
-                            ...prev,
-                            page: 1,
-                            brand: e,
-                          }));
-                        }}
-                      />
+  label="Brands"
+  data={[{ label: "All", value: "" }, ...(brands || [])]}
+  value={filters.brand}
+  placeholder="Select Brand"
+  clearable
+  onChange={(e: any) => {
+    setFilters((prev) => ({
+      ...prev,
+      page: 1,
+      brand: e,
+    }));
+  }}
+/>
 
 
                       <Select
